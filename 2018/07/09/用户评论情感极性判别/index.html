@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018/7 | Hexo</title>
+  <title>用户评论情感极性判别 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2018/07/index.html">
+  <meta name="description" content="本文章介绍百度点石平台上的一个训练赛的赛题代码，赛题是包括用户评论文字的情感判别的分类问题，赛题链接戳此处 数据预处理 使用测试数据和训练数据生成语料库  12345678910111213141516171819202122232425262728import numpy as npimport jiebaimport codecs# 该函数作用是读取文件def load_data(file_p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用户评论情感极性判别">
+<meta property="og:url" content="http://yoursite.com/2018/07/09/用户评论情感极性判别/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文章介绍百度点石平台上的一个训练赛的赛题代码，赛题是包括用户评论文字的情感判别的分类问题，赛题链接戳此处 数据预处理 使用测试数据和训练数据生成语料库  12345678910111213141516171819202122232425262728import numpy as npimport jiebaimport codecs# 该函数作用是读取文件def load_data(file_p">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-07-09T10:35:12.340Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="用户评论情感极性判别">
+<meta name="twitter:description" content="本文章介绍百度点石平台上的一个训练赛的赛题代码，赛题是包括用户评论文字的情感判别的分类问题，赛题链接戳此处 数据预处理 使用测试数据和训练数据生成语料库  12345678910111213141516171819202122232425262728import numpy as npimport jiebaimport codecs# 该函数作用是读取文件def load_data(file_p">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -156,103 +160,176 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-用户评论情感极性判别" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      用户评论情感极性判别
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/09/用户评论情感极性判别/" class="archive-article-date">
+
+        
+        <a href="/2018/07/09/用户评论情感极性判别/" class="archive-article-date">
   	<time datetime="2018-07-09T10:34:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-09</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/09/用户评论情感极性判别/">用户评论情感极性判别</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文章介绍百度点石平台上的一个训练赛的赛题代码，赛题是包括用户评论文字的情感判别的分类问题，<a href="http://dianshi.baidu.com/gemstone/competitions/detail?raceId=18" target="_blank" rel="noopener">赛题链接戳此处</a></p>
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><blockquote>
+<p>使用测试数据和训练数据生成语料库</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import jieba</span><br><span class="line">import codecs</span><br><span class="line"># 该函数作用是读取文件</span><br><span class="line">def load_data(file_path):</span><br><span class="line">    data_set = []</span><br><span class="line">    with open(file_path, &apos;r&apos;) as lines:</span><br><span class="line">        for line in lines:</span><br><span class="line">            line=line.strip()</span><br><span class="line">            values=line.split(&quot;\t&quot;)</span><br><span class="line">            data_set.append(values)</span><br><span class="line">    np.array(data_set)</span><br><span class="line">   # print(data_set[0])</span><br><span class="line">    return data_set</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">dataAll=load_data(&apos;data_train.csv&apos;)</span><br><span class="line">dataTest=load_data(&apos;data_test.csv&apos;)</span><br><span class="line">csvfile = codecs.open(&quot;fenci_result.csv&quot;, &apos;w&apos;, &apos;utf-8&apos;)</span><br><span class="line">#f=open(&apos;fenci_result.txt&apos;,&apos;a&apos;)</span><br><span class="line">for item in dataAll:</span><br><span class="line">    seg_list=jieba.cut(item[2])#使用结巴分词</span><br><span class="line">    csvfile.write(&quot; &quot;.join(seg_list))#以空格隔开把分好的词写入文件，形成语料</span><br><span class="line">#f.close()</span><br><span class="line"></span><br><span class="line">for item in dataTest:</span><br><span class="line">    seg_list=jieba.cut(item[-1])</span><br><span class="line">    csvfile.write(&quot; &quot;.join(seg_list))</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<blockquote>
+<p>利用语料库，使用word2vec工具，生成可备用的模型，用于将句子转化为向量</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from gensim.models import word2vec</span><br><span class="line">import logging</span><br><span class="line">logging.basicConfig(format = &apos;%(asctime)s : %(levelname)s : %(message)s&apos;, level = logging.INFO)</span><br><span class="line">sentences = word2vec.Text8Corpus(&quot;fenci_result.csv&quot;)  # 加载语料</span><br><span class="line">model = word2vec.Word2Vec(sentences, size = 400)  # 训练skip-gram模型</span><br><span class="line"></span><br><span class="line"># 保存模型，以便重用</span><br><span class="line">model.save(&quot;corpus.model&quot;)</span><br><span class="line">model.wv.save_word2vec_format(&quot;corpus.model.bin&quot;, binary = True)</span><br></pre></td></tr></table></figure>
+<h3 id="数据训练与测试"><a href="#数据训练与测试" class="headerlink" title="数据训练与测试"></a>数据训练与测试</h3><blockquote>
+<p>感觉训练方式很简陋，有待改善</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">#本程序用来测试模型</span><br><span class="line">#coding=utf-8 </span><br><span class="line">import re</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba</span><br><span class="line">from gensim.models import word2vec</span><br><span class="line">import logging</span><br><span class="line">import codecs</span><br><span class="line">from sklearn.decomposition import PCA</span><br><span class="line">from sklearn.model_selection import train_test_split</span><br><span class="line">from sklearn import svm</span><br><span class="line">from sklearn.metrics import accuracy_score,confusion_matrix, f1_score, precision_score, recall_score, \</span><br><span class="line">    roc_curve  # 导入指标库</span><br><span class="line">import prettytable  # 导入表格库</span><br><span class="line"># 该函数作用是读取文件</span><br><span class="line">def load_data(file_path):</span><br><span class="line">    data_set = []</span><br><span class="line">    with open(file_path, &apos;r&apos;) as lines:</span><br><span class="line">        for line in lines:</span><br><span class="line">            line=line.strip()</span><br><span class="line">            values=line.split(&quot;\t&quot;)</span><br><span class="line">            data_set.append(values)</span><br><span class="line">    np.array(data_set)</span><br><span class="line">   # print(data_set[0])</span><br><span class="line">    return data_set</span><br><span class="line">#写文件</span><br><span class="line">def write_result(array, outpuFilePath):</span><br><span class="line">    with open(outpuFilePath, &apos;w&apos;) as output_file:</span><br><span class="line">        for i in range(len(array)):</span><br><span class="line">            output_file.write(&quot;%d,%d\n&quot; % (i+1,array[i]))</span><br><span class="line">#将句子转化为向量</span><br><span class="line">def getWordVecs(wordList):</span><br><span class="line">    vecs = []</span><br><span class="line">    for word in wordList:</span><br><span class="line">        word = word.strip()</span><br><span class="line">        try:</span><br><span class="line">            vecs.append(model[word])</span><br><span class="line">        except KeyError:</span><br><span class="line">            continue</span><br><span class="line">        </span><br><span class="line">    # vecs = np.concatenate(vecs)</span><br><span class="line">    return np.array(vecs, dtype = &apos;float&apos;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = word2vec.KeyedVectors.load_word2vec_format(&quot;corpus.model.bin&quot;, binary = True)</span><br><span class="line"></span><br><span class="line"># segList=jieba.cut(&apos;烤鸭还是不错的，别的菜没什么特殊的&apos;)</span><br><span class="line"># resultList = getWordVecs(segList)</span><br><span class="line"># print(sum(np.array(resultList))/2)</span><br><span class="line"></span><br><span class="line">dataAll=load_data(&apos;data_train.csv&apos;)</span><br><span class="line">X=[]</span><br><span class="line">y=[]</span><br><span class="line">dataAll=np.array(dataAll[:1500])</span><br><span class="line">for item in dataAll:</span><br><span class="line">    #temp=int(item[-1])</span><br><span class="line"></span><br><span class="line">    #y.append(temp if temp!=0 else 1)#把0都替换成1，先对2和1进行分类</span><br><span class="line">    y.append(int(item[-1]))</span><br><span class="line">    segList=jieba.cut(item[2])</span><br><span class="line">    vecList=getWordVecs(segList)</span><br><span class="line">    if len(vecList) != 0:</span><br><span class="line">        X.append(sum(np.array(vecList))/len(vecList))</span><br><span class="line">X=X[:]</span><br><span class="line">x_train=np.array(X)</span><br><span class="line">y_train=np.array(y)</span><br><span class="line">print(x_train)</span><br><span class="line">print(y_train)</span><br><span class="line"></span><br><span class="line"># x_train = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2], [2, 1], [3, 2]])</span><br><span class="line"># print(x_train)</span><br><span class="line"># 使用sklearn的PCA进行维度转换</span><br><span class="line">model_pca = PCA(n_components=0.95)  # 建立PCA模型对象</span><br><span class="line">model_pca.fit(x_train)  # 将数据集输入模型</span><br><span class="line">#model_pca.transform(x_train)  # 对数据集进行转换映射</span><br><span class="line">newX=model_pca.fit_transform(x_train)#进行转换映射，并将转换后的赋给newX</span><br><span class="line">components = model_pca.components_  # 获得转换后的所有主成分(不明白什么意思)</span><br><span class="line">components_var = model_pca.explained_variance_  # 获得各主成分的方差</span><br><span class="line">components_var_ratio = model_pca.explained_variance_ratio_  # 获得各主成分的方差占比</span><br><span class="line">print(&quot;\n主成分分析：&quot;)</span><br><span class="line">print (components)  # 打印输出前2个主成分</span><br><span class="line">print (len(components_var))  # 打印输出所有主成分的方差</span><br><span class="line">print (components_var_ratio)  # 打印输出所有主成分的方差占比</span><br><span class="line">print(len(newX))</span><br><span class="line">print(len(newX[0]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(newX, y_train, test_size=.3, random_state=0)</span><br><span class="line">clf = svm.SVC(C=1, kernel=&apos;linear&apos;,decision_function_shape=&apos;ovr&apos;)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">y_hat=clf.predict(X_test)</span><br><span class="line"></span><br><span class="line">##评价指标</span><br><span class="line">accuracy_s = accuracy_score(y_test, y_hat)  # 准确率</span><br><span class="line">precision_s = precision_score(y_test, y_hat, average=&apos;macro&apos;) # 精确度</span><br><span class="line">recall_s = recall_score(y_test, y_hat, average=&apos;macro&apos;)  # 召回率</span><br><span class="line">f1_s = f1_score(y_test, y_hat, average=&apos;weighted&apos;)  # F1得分</span><br><span class="line">print(&apos;Accuracy:&apos;)</span><br><span class="line">print(accuracy_s)</span><br><span class="line">print(&apos;Precision:&apos;)</span><br><span class="line">print(precision_s)</span><br><span class="line">print(&apos;Recall:&apos;)</span><br><span class="line">print(recall_s)</span><br><span class="line">print(&apos;f-measure:&apos;)</span><br><span class="line">print(f1_s)</span><br><span class="line"></span><br><span class="line">##混淆矩阵</span><br><span class="line">confusion_m = confusion_matrix(y_test,y_hat)  # 获得混淆矩阵</span><br><span class="line">confusion_matrix_table = prettytable.PrettyTable()  # 创建表格实例</span><br><span class="line">confusion_matrix_table.add_row(confusion_m[0, :])  # 增加第一行数据</span><br><span class="line">confusion_matrix_table.add_row(confusion_m[1, :])  # 增加第二行数据</span><br><span class="line">confusion_matrix_table.add_row(confusion_m[2, :])  # 增加第三行数据</span><br><span class="line">print (&apos;confusion matrix&apos;)</span><br><span class="line">print (confusion_matrix_table)  # 打印输出混淆矩阵</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">write_result(y_hat,&apos;print.csv&apos;)</span><br></pre></td></tr></table></figure>
+<h3 id="预测阶段"><a href="#预测阶段" class="headerlink" title="预测阶段"></a>预测阶段</h3><blockquote>
+<p>使用所有训练数据训练模型并对test数据进行预测</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">#本程序用来进行预测</span><br><span class="line">#coding=utf-8 </span><br><span class="line">import re</span><br><span class="line">import numpy as np</span><br><span class="line">import jieba</span><br><span class="line">from gensim.models import word2vec</span><br><span class="line">import logging</span><br><span class="line">import codecs</span><br><span class="line">from sklearn.decomposition import PCA</span><br><span class="line">from sklearn.model_selection import train_test_split</span><br><span class="line">from sklearn import svm</span><br><span class="line"># 该函数作用是读取文件</span><br><span class="line">def load_data(file_path):</span><br><span class="line">    data_set = []</span><br><span class="line">    with open(file_path, &apos;r&apos;) as lines:</span><br><span class="line">        for line in lines:</span><br><span class="line">            line=line.strip()</span><br><span class="line">            values=line.split(&apos;\t&apos;)</span><br><span class="line">            data_set.append(values)</span><br><span class="line">    np.array(data_set)</span><br><span class="line">   # print(data_set[0])</span><br><span class="line">    return data_set</span><br><span class="line">#写文件</span><br><span class="line">def write_result(array, outpuFilePath):</span><br><span class="line">    with open(outpuFilePath, &apos;w&apos;) as output_file:</span><br><span class="line">        for i in range(len(array)):</span><br><span class="line">            output_file.write(&quot;%d,%d\n&quot; % (i+1,array[i]))</span><br><span class="line"></span><br><span class="line">#将句子转化为向量</span><br><span class="line">def getWordVecs(wordList):</span><br><span class="line">    vecs = []</span><br><span class="line">    for word in wordList:</span><br><span class="line">        word = word.strip()</span><br><span class="line">        try:</span><br><span class="line">            vecs.append(model[word])</span><br><span class="line">        except KeyError:</span><br><span class="line">            continue</span><br><span class="line">        </span><br><span class="line">    # vecs = np.concatenate(vecs)</span><br><span class="line">    return np.array(vecs, dtype = &apos;float&apos;)</span><br><span class="line">#对预测数据进行处理</span><br><span class="line">def preDataHandle():</span><br><span class="line">    preData=load_data(&apos;data_test.csv&apos;)</span><br><span class="line">    #exit(0)</span><br><span class="line">    xPre=[]</span><br><span class="line">    i=0</span><br><span class="line">    k=0</span><br><span class="line">    for item in preData:</span><br><span class="line">        i+=1</span><br><span class="line">        s=&apos;&apos;</span><br><span class="line">        for j in range(len(item)):</span><br><span class="line">            if(j&gt;1):</span><br><span class="line">                s=&quot;%s%s&quot;%(s,item[j])</span><br><span class="line">        segList=jieba.cut(s)</span><br><span class="line">        vecList=getWordVecs(segList)</span><br><span class="line">        if len(vecList) != 0:</span><br><span class="line">            xPre.append(sum(np.array(vecList))/len(vecList))</span><br><span class="line">        else:</span><br><span class="line">            k+=1</span><br><span class="line">            print(&apos;存在vecList长度为0的情况&apos;)</span><br><span class="line">            print(item)</span><br><span class="line">    x_pre=np.array(xPre)</span><br><span class="line">    model_pca = PCA(n_components=factorNum)  # 建立PCA模型对象</span><br><span class="line">    model_pca.fit(x_pre)  # 将数据集输入模型</span><br><span class="line">    x_pre=model_pca.fit_transform(x_pre)#进行转换映射</span><br><span class="line">    return x_pre</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = word2vec.KeyedVectors.load_word2vec_format(&quot;corpus.model.bin&quot;, binary = True)</span><br><span class="line">dataAll=load_data(&apos;data_train.csv&apos;)</span><br><span class="line">X=[]</span><br><span class="line">y=[]</span><br><span class="line">#dataAll=np.array(dataAll[:1500])</span><br><span class="line">for item in dataAll:</span><br><span class="line">    print(item)</span><br><span class="line">    y.append(int(item[-1]))</span><br><span class="line">    segList=jieba.cut(item[2])</span><br><span class="line">    vecList=getWordVecs(segList)</span><br><span class="line">    if len(vecList) != 0:</span><br><span class="line">        X.append(sum(np.array(vecList))/len(vecList))</span><br><span class="line">    else:</span><br><span class="line">        print(item)</span><br><span class="line">X=X[:]</span><br><span class="line">x_train=np.array(X)</span><br><span class="line">y_train=np.array(y)</span><br><span class="line">model_pca = PCA(n_components=0.95)  # 建立PCA模型对象</span><br><span class="line">model_pca.fit(x_train)  # 将数据集输入模型</span><br><span class="line">#model_pca.transform(x_train)  # 对数据集进行转换映射</span><br><span class="line">newX=model_pca.fit_transform(x_train)#进行转换映射，并将转换后的赋给newX</span><br><span class="line">factorNum=len(newX[0])</span><br><span class="line">clf = svm.SVC(C=1, kernel=&apos;linear&apos;,decision_function_shape=&apos;ovr&apos;)</span><br><span class="line">clf.fit(newX, y_train)</span><br><span class="line"></span><br><span class="line">x_pre=preDataHandle()</span><br><span class="line">y_pre=clf.predict(x_pre)</span><br><span class="line"></span><br><span class="line">write_result(y_pre,&apos;output.csv&apos;)</span><br><span class="line">print(&apos;Project has been finished successfully!&apos;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>比赛平台上计算出的结果f1-score为0.7249，很低，希望再接再厉</p>
+</blockquote>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/07/09/用户评论情感极性判别/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/09/Hello-Hexo/" class="archive-article-date">
-  	<time datetime="2018-07-09T06:58:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-09</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/09/Hello-Hexo/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello,Hexo!</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/09/Hello-Hexo/">Hello,Hexo!</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/09/hello-world/" class="archive-article-date">
-  	<time datetime="2018-07-09T06:28:05.440Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/09/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -275,8 +352,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
