@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="雷答在 Github 上的个人博客">
+    <meta name="keyword" content="">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="curiousLei" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        https搭建(自签署证书)｜Leida&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://curiousLei.github.io/2019/01/19/https搭建(自签署证书)/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    curiousLei
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://pkzsficup.bkt.clouddn.com/blog-bg-black-run.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://pkzsficup.bkt.clouddn.com/blog-bg-black-run.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>https搭建(自签署证书)</h1>
+                    
+                    <span class="meta">
+                         作者 Lei da
+                        <span>
+                          日期 2019-01-19
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            https搭建(自签署证书)
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>上一篇博客探究了https（ssl）的原理，为了贯彻理论落实于实践的宗旨，本文将记录我搭建https的实操流程，使用Apache2+ubuntu+opensssl</p>
+<h1 id="1-使用自签证书搭建https"><a href="#1-使用自签证书搭建https" class="headerlink" title="1.使用自签证书搭建https"></a>1.使用自签证书搭建https</h1><p>一般来讲，正式的上线项目都需要购买域名，并且向权威机构申请证书。但本次工作属于测试环境，所以一切从简，我们使用openssl工具生自签名的CA证书以及服务器证书，来搭建https。具体步骤如下：</p>
+<h2 id="（1）安装apache2、openssl-ubuntu16-04"><a href="#（1）安装apache2、openssl-ubuntu16-04" class="headerlink" title="（1）安装apache2、openssl(ubuntu16.04)"></a>（1）安装apache2、openssl(ubuntu16.04)</h2><p>安装过程此处不做赘述，很简单。Apache2安装完成并启动后，通过<a href="http://ipaddress" target="_blank" rel="noopener">http://ipaddress</a> 来测试，如下图所示，说明安装成功<br><img src="http://pkzsficup.bkt.clouddn.com/apache_http.PNG" alt="image"></p>
+<h2 id="（2）制作证书"><a href="#（2）制作证书" class="headerlink" title="（2）制作证书"></a>（2）制作证书</h2><h3 id="生成自签发CA证书"><a href="#生成自签发CA证书" class="headerlink" title="生成自签发CA证书"></a>生成自签发CA证书</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out ca.key 2048</span><br><span class="line">openssl req -new -x509 -days 3650 -key ca.key -out ca.crt -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
+<p>openssl.cnf的路径注意写对。最后在当前目录下生成的ca.key即为CA私钥，ca.crt即为CA证书（包含CA公钥）</p>
+<h3 id="生成服务器证书"><a href="#生成服务器证书" class="headerlink" title="生成服务器证书"></a>生成服务器证书</h3><ul>
+<li>生成服务器私钥</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out server.key 2048</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生成服务器签署申请</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl req -new -out server.csr -key server.key -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
+<p>需要填写服务器信息，如实填写即可。需要注意Common Name 需要与openssl.cnf 中配置的域名相对应，否则客户端无法验证。openssl.cnf中默认没有域名配置，需要手动添加，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[ v3_req ]</span><br><span class="line"></span><br><span class="line"># Extensions to add to a certificate request</span><br><span class="line"></span><br><span class="line">basicConstraints = CA:FALSE</span><br><span class="line">keyUsage = nonRepudiation, digitalSignature, keyEncipherment</span><br><span class="line">subjectAltName=@alt_names</span><br><span class="line"></span><br><span class="line">[ alt_names ]</span><br><span class="line">DNS.1 = abc.leida.com</span><br><span class="line">DNS.2 = def.leida.org</span><br></pre></td></tr></table></figure>
+<p>最后生成的server.csr即为申请文件</p>
+<ul>
+<li>使用CA证书和私钥签署服务器证书</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
+<p>直接运行该签署命令，会报错，提示缺少某些文件和目录。在当前目录下把相应的文件文件夹创建上即可解决，如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p demoCA/newcerts</span><br><span class="line">touch ./demoCA/index.txt ./demoCA/serial</span><br><span class="line">echo &quot;01&quot;&gt;&gt; ./demoCA/serial</span><br></pre></td></tr></table></figure>
+<p>创建完毕后，运行签署命令即可完成服务器证书的制作。当前目录下生成的server.crt即为服务器证书，server.key为服务器私钥</p>
+<h2 id="（3）配置apache2"><a href="#（3）配置apache2" class="headerlink" title="（3）配置apache2"></a>（3）配置apache2</h2><ul>
+<li>启用ssl模块(此处可使用a2enmod命令)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a2enmod ssl</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启用ssl站点</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">a2ensite default-ssl</span><br></pre></td></tr></table></figure>
+<ul>
+<li>加入监听端口443(因为https默认采用443端口，有别于http的80)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">listen 80 443</span><br><span class="line"># /etc/apache2/ports.conf中修改成如上所示即可</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置证书以及私钥的路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SSLCertificateFile     /etc/ssl/certs/server.crt</span><br><span class="line">SSLCertificateKeyFile /etc/ssl/private/server.key</span><br><span class="line"># 在/etc/apache2/sites-available/default-ssl.conf中修改如上参数</span><br></pre></td></tr></table></figure>
+<p>重启Apache后，不出意外已经大功告成了</p>
+<h1 id="2-使用浏览器测试https"><a href="#2-使用浏览器测试https" class="headerlink" title="2.使用浏览器测试https"></a>2.使用浏览器测试https</h1><p>完成以上步骤后，使用浏览器访问<a href="https://ipaddress会跳出如下提示界面。" target="_blank" rel="noopener">https://ipaddress会跳出如下提示界面。</a><br><img src="http://pkzsficup.bkt.clouddn.com/httpsNotSafe.PNG" alt="image"></p>
+<p>实际上此时浏览器已获取到服务器证书server.crt，只是无法验证它。选择高级选项中的继续浏览时，同样可以正常跳转至对应的页面，这时相当于强行让浏览器接受该证书。</p>
+<p>要想让浏览器不报错（即在导航栏左侧显示安全的小锁），必须要将CA证书（ca.crt）安装至客户端系统中，保证浏览器可通过此CA证书来验证服务器证书server.crt。安装过程很简单，双击如下所示安装即可<br><img src="http://pkzsficup.bkt.clouddn.com/installCert.PNG" alt="image"><br>此时，我遇到一个问题，chrome浏览器的导航栏依然显示不安全，查看security得知，是缺少“使用者备用名称”所导致，如下图所示。如何解决这个问题，可以参考这个博客<a href="https://my.oschina.net/jsan/blog/643653" target="_blank" rel="noopener">https://my.oschina.net/jsan/blog/643653</a></p>
+<p><img src="http://pkzsficup.bkt.clouddn.com/missAltName.PNG" alt="image"><br>重点是修改openssl.cnf中相关配置，再重新生成证书即可。注意签署证书时，指令中指定一个扩展-extensions v3_req，否则无法添加备用名</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key -extensions v3_req -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
+<p>再次测试发现“使用者备用名称”的错误已经不复存在了，但仍然存在以下错误。。。待解决</p>
+<h1 id="3-验证证书客户端实现"><a href="#3-验证证书客户端实现" class="headerlink" title="3.验证证书客户端实现"></a>3.验证证书客户端实现</h1>
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/01/06/https原理总结/" data-toggle="tooltip" data-placement="top"
+                           title="https原理总结">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-使用自签证书搭建https"><span class="toc-text">1.使用自签证书搭建https</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#（1）安装apache2、openssl-ubuntu16-04"><span class="toc-text">（1）安装apache2、openssl(ubuntu16.04)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（2）制作证书"><span class="toc-text">（2）制作证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成自签发CA证书"><span class="toc-text">生成自签发CA证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成服务器证书"><span class="toc-text">生成服务器证书</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（3）配置apache2"><span class="toc-text">（3）配置apache2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-使用浏览器测试https"><span class="toc-text">2.使用浏览器测试https</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-验证证书客户端实现"><span class="toc-text">3.验证证书客户端实现</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CuriousLei">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; curiousLei 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://curiousLei.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://pkzsficup.bkt.clouddn.com/akane.jpg">
+</body>
+
+</html>
