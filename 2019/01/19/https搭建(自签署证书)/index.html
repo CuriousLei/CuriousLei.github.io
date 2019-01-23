@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        https搭建(自签署证书)｜Leida&#39;s blog
+        https搭建(自签名证书)｜Leida&#39;s blog
         
     </title>
 
@@ -137,7 +137,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>https搭建(自签署证书)</h1>
+                    <h1>https搭建(自签名证书)</h1>
                     
                     <span class="meta">
                          作者 Lei da
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            https搭建(自签署证书)
+            https搭建(自签名证书)
         </span>
     </div>
 </header>
@@ -166,26 +166,35 @@
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <p>上一篇博客探究了https（ssl）的原理，为了贯彻理论落实于实践的宗旨，本文将记录我搭建https的实操流程，使用Apache2+ubuntu+opensssl</p>
-<h1 id="1-使用自签证书搭建https"><a href="#1-使用自签证书搭建https" class="headerlink" title="1.使用自签证书搭建https"></a>1.使用自签证书搭建https</h1><p>一般来讲，正式的上线项目都需要购买域名，并且向权威机构申请证书。但本次工作属于测试环境，所以一切从简，我们使用openssl工具生自签名的CA证书以及服务器证书，来搭建https。具体步骤如下：</p>
-<h2 id="（1）安装apache2、openssl-ubuntu16-04"><a href="#（1）安装apache2、openssl-ubuntu16-04" class="headerlink" title="（1）安装apache2、openssl(ubuntu16.04)"></a>（1）安装apache2、openssl(ubuntu16.04)</h2><p>安装过程此处不做赘述，很简单。Apache2安装完成并启动后，通过<a href="http://ipaddress" target="_blank" rel="noopener">http://ipaddress</a> 来测试，如下图所示，说明安装成功<br><img src="http://pkzsficup.bkt.clouddn.com/apache_http.PNG" alt="image"></p>
-<h2 id="（2）制作证书"><a href="#（2）制作证书" class="headerlink" title="（2）制作证书"></a>（2）制作证书</h2><h3 id="生成自签发CA证书"><a href="#生成自签发CA证书" class="headerlink" title="生成自签发CA证书"></a>生成自签发CA证书</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out ca.key 2048</span><br><span class="line">openssl req -new -x509 -days 3650 -key ca.key -out ca.crt -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
-<p>openssl.cnf的路径注意写对。最后在当前目录下生成的ca.key即为CA私钥，ca.crt即为CA证书（包含CA公钥）</p>
-<h3 id="生成服务器证书"><a href="#生成服务器证书" class="headerlink" title="生成服务器证书"></a>生成服务器证书</h3><ul>
-<li>生成服务器私钥</li>
+<h1 id="1-使用自签证书配置https"><a href="#1-使用自签证书配置https" class="headerlink" title="1.使用自签证书配置https"></a>1.使用自签证书配置https</h1><p>一般来讲，正式的上线项目都需要购买域名，并且向权威机构申请证书。但本次工作属于测试环境，所以一切从简，我们使用openssl工具生自签名的CA证书以及服务器证书，来搭建https。具体步骤如下：</p>
+<h2 id="（1）安装apache2、openssl-ubuntu16-04"><a href="#（1）安装apache2、openssl-ubuntu16-04" class="headerlink" title="（1）安装apache2、openssl(ubuntu16.04)"></a>（1）安装apache2、openssl(ubuntu16.04)</h2><p>安装过程此处不做赘述，很简单。Apache2安装完成并启动后，通过<a href="http://ipaddress" target="_blank" rel="noopener">http://ipaddress</a> 来测试，如下图所示，说明安装成功<br><img src="http://pkzsficup.bkt.clouddn.com/apacheOk.png" alt="image"></p>
+<h2 id="（2）制作证书"><a href="#（2）制作证书" class="headerlink" title="（2）制作证书"></a>（2）制作证书</h2><h3 id="生成自签CA证书"><a href="#生成自签CA证书" class="headerlink" title="生成自签CA证书"></a>生成自签CA证书</h3><ul>
+<li><p>生成CA私钥</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out ca.key 2048</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成CA证书</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl req -new -x509 -days 3650 -key ca.key -out ca.crt -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
+<p>openssl.cnf的路径注意填对。最后在当前目录下生成的ca.key即为CA私钥，ca.crt即为CA证书（包含CA公钥）</p>
+<h3 id="生成服务器证书"><a href="#生成服务器证书" class="headerlink" title="生成服务器证书"></a>生成服务器证书</h3><ul>
+<li><p>生成服务器私钥</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out server.key 2048</span><br></pre></td></tr></table></figure>
-<ul>
-<li>生成服务器签署申请</li>
+</li>
+<li><p>生成服务器签署申请文件</p>
+</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl req -new -out server.csr -key server.key -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
-<p>需要填写服务器信息，如实填写即可。需要注意Common Name 需要与openssl.cnf 中配置的域名相对应，否则客户端无法验证。openssl.cnf中默认没有域名配置，需要手动添加，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[ v3_req ]</span><br><span class="line"></span><br><span class="line"># Extensions to add to a certificate request</span><br><span class="line"></span><br><span class="line">basicConstraints = CA:FALSE</span><br><span class="line">keyUsage = nonRepudiation, digitalSignature, keyEncipherment</span><br><span class="line">subjectAltName=@alt_names</span><br><span class="line"></span><br><span class="line">[ alt_names ]</span><br><span class="line">DNS.1 = abc.leida.com</span><br><span class="line">DNS.2 = def.leida.org</span><br></pre></td></tr></table></figure>
-<p>最后生成的server.csr即为申请文件</p>
+<p>需要填写服务器信息，如实填写即可。需要注意Common Name 需要与openssl.cnf 中配置的域名相对应（alt_names），否则客户端无法验证。该命令最后生成的server.csr即为申请文件。openssl.cnf的具体配置见下文。</p>
+<ul>
+<li>在签署证书之前需要确认openssl.cnf中的配置，如下所示：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#根据实际情况修改，将match改成optional，否则ca.crt必须与server.csr中的各个字段值一致才能签署</span><br><span class="line">[ policy_match ]</span><br><span class="line">countryName             = optional</span><br><span class="line">stateOrProvinceName     = optional</span><br><span class="line">organizationName        = optional</span><br><span class="line">organizationalUnitName  = optional</span><br><span class="line">commonName              = supplied</span><br><span class="line">emailAddress            = optional</span><br><span class="line"># 确保req下存在以下2行（默认第一行是有的，第2行被注释了）</span><br><span class="line">[ req ]</span><br><span class="line">distinguished_name = req_distinguished_name</span><br><span class="line">req_extensions = v3_req</span><br><span class="line"># 确保req_distinguished_name下没有 0.xxx 的标签，有的话把0.xxx的0. 去掉</span><br><span class="line">[ req_distinguished_name ]</span><br><span class="line">countryName                     = Country Name (2 letter code)</span><br><span class="line">countryName_default             = XX</span><br><span class="line">countryName_min                 = 2</span><br><span class="line">countryName_max                 = 2</span><br><span class="line">stateOrProvinceName             = State or Province Name (full name)</span><br><span class="line">localityName                    = Locality Name (eg, city)</span><br><span class="line">localityName_default            = Default City</span><br><span class="line">organizationName                = Organization Name (eg, company)</span><br><span class="line">organizationName_default        = Default Company Ltd</span><br><span class="line">organizationalUnitName          = Organizational Unit Name (eg, section)</span><br><span class="line">commonName                      = Common Name (eg, your name or your server\&apos;s hostname)</span><br><span class="line">commonName_max                  = 64</span><br><span class="line">emailAddress                    = Email Address</span><br><span class="line">emailAddress_max                = 64</span><br><span class="line">#添加一行subjectAltName=@alt_names</span><br><span class="line">[ v3_req ]</span><br><span class="line"># Extensions to add to a certificate request</span><br><span class="line">basicConstraints = CA:FALSE</span><br><span class="line">keyUsage = nonRepudiation, digitalSignature, keyEncipherment</span><br><span class="line">subjectAltName=@alt_names</span><br><span class="line">#新增alt_names,注意括号前后的空格，DNS.x 的数量可以自己加</span><br><span class="line">#如果没有IP这一项，浏览器使用IP访问时验证无法通过</span><br><span class="line">[ alt_names ]</span><br><span class="line">IP.1 = 192.168.50.115</span><br><span class="line">DNS.1 = dfe.leida.org</span><br><span class="line">DNS.2 = ex.abcexpale.net</span><br></pre></td></tr></table></figure>
 <ul>
 <li>使用CA证书和私钥签署服务器证书</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
-<p>直接运行该签署命令，会报错，提示缺少某些文件和目录。在当前目录下把相应的文件文件夹创建上即可解决，如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key -extensions v3_req -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
+<p>直接运行该签署命令，会报错，提示缺少某些文件和目录。在当前目录下把相应的文件及文件夹创建上即可解决，如下</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p demoCA/newcerts</span><br><span class="line">touch ./demoCA/index.txt ./demoCA/serial</span><br><span class="line">echo &quot;01&quot;&gt;&gt; ./demoCA/serial</span><br></pre></td></tr></table></figure>
 <p>创建完毕后，运行签署命令即可完成服务器证书的制作。当前目录下生成的server.crt即为服务器证书，server.key为服务器私钥</p>
 <h2 id="（3）配置apache2"><a href="#（3）配置apache2" class="headerlink" title="（3）配置apache2"></a>（3）配置apache2</h2><ul>
@@ -203,15 +212,24 @@
 <ul>
 <li>配置证书以及私钥的路径</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SSLCertificateFile     /etc/ssl/certs/server.crt</span><br><span class="line">SSLCertificateKeyFile /etc/ssl/private/server.key</span><br><span class="line"># 在/etc/apache2/sites-available/default-ssl.conf中修改如上参数</span><br></pre></td></tr></table></figure>
-<p>重启Apache后，不出意外已经大功告成了</p>
-<h1 id="2-使用浏览器测试https"><a href="#2-使用浏览器测试https" class="headerlink" title="2.使用浏览器测试https"></a>2.使用浏览器测试https</h1><p>完成以上步骤后，使用浏览器访问<a href="https://ipaddress会跳出如下提示界面。" target="_blank" rel="noopener">https://ipaddress会跳出如下提示界面。</a><br><img src="http://pkzsficup.bkt.clouddn.com/httpsNotSafe.PNG" alt="image"></p>
-<p>实际上此时浏览器已获取到服务器证书server.crt，只是无法验证它。选择高级选项中的继续浏览时，同样可以正常跳转至对应的页面，这时相当于强行让浏览器接受该证书。</p>
-<p>要想让浏览器不报错（即在导航栏左侧显示安全的小锁），必须要将CA证书（ca.crt）安装至客户端系统中，保证浏览器可通过此CA证书来验证服务器证书server.crt。安装过程很简单，双击如下所示安装即可<br><img src="http://pkzsficup.bkt.clouddn.com/installCert.PNG" alt="image"><br>此时，我遇到一个问题，chrome浏览器的导航栏依然显示不安全，查看security得知，是缺少“使用者备用名称”所导致，如下图所示。如何解决这个问题，可以参考这个博客<a href="https://my.oschina.net/jsan/blog/643653" target="_blank" rel="noopener">https://my.oschina.net/jsan/blog/643653</a></p>
-<p><img src="http://pkzsficup.bkt.clouddn.com/missAltName.PNG" alt="image"><br>重点是修改openssl.cnf中相关配置，再重新生成证书即可。注意签署证书时，指令中指定一个扩展-extensions v3_req，否则无法添加备用名</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key -extensions v3_req -config /etc/ssl/openssl.cnf</span><br></pre></td></tr></table></figure>
-<p>再次测试发现“使用者备用名称”的错误已经不复存在了，但仍然存在以下错误。。。待解决</p>
-<h1 id="3-验证证书客户端实现"><a href="#3-验证证书客户端实现" class="headerlink" title="3.验证证书客户端实现"></a>3.验证证书客户端实现</h1>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SSLCertificateFile     /etc/ssl/certs/server.crt</span><br><span class="line">SSLCertificateKeyFile /etc/ssl/private/server.key</span><br><span class="line"># 在/etc/apache2/sites-available/default-ssl.conf中修改如上参数，确认证书和私钥的路径正确无误</span><br></pre></td></tr></table></figure>
+<p>重启apache2，搞定！</p>
+<h1 id="2-使用浏览器测试https"><a href="#2-使用浏览器测试https" class="headerlink" title="2.使用浏览器测试https"></a>2.使用浏览器测试https</h1><p>上述的制作证书步骤，已经是我测试结束、爬完坑后的正确教程，下文则是填坑记录。</p>
+<p>实际上，我一开始按照网上的方法搭建完https后，出现过一些问题。使用浏览器访问<a href="https://ipaddress" target="_blank" rel="noopener">https://ipaddress</a> 会跳出如下提示界面<br><img src="http://pkzsficup.bkt.clouddn.com/httpsNotSafe.PNG" alt="image"><br>实际上此时浏览器已获取到服务器证书server.crt，只是由于某些原因无法验证它。若选择高级选项中的“继续浏览”时，同样可以正常跳转至对应的页面，这时相当于强行让浏览器接受该证书，同时接受服务器公钥。在测试环境下，这样完全OK。但是，强迫症的我还是想让导航栏上出现安全的小锁，红叉叉看着很难受啊。</p>
+<p>下面总结记录一下使用浏览器（chrome）测试的过程中遇到的问题以及解决方法</p>
+<h2 id="（1）客户端缺少CA证书"><a href="#（1）客户端缺少CA证书" class="headerlink" title="（1）客户端缺少CA证书"></a>（1）客户端缺少CA证书</h2><p>点击导航栏左侧的感叹号，查看证书，如下图所示<br><img src="http://pkzsficup.bkt.clouddn.com/caNotBlve.PNG" alt="image"><br>此时浏览器已获取到server.crt，由于其对应的CA证书不存在于“受信任的根证书机构”中，所以无法验证server.crt</p>
+<p>我们需要将CA证书（上文使用OpenSSL生成的ca.crt）安装至客户端系统中的“受信任的根证书机构”中，保证浏览器可通过此CA证书来验证服务器证书server.crt。安装过程很简单，双击如下所示安装即可</p>
+<p><img src="http://pkzsficup.bkt.clouddn.com/installCert.PNG" alt="image"><br>安装结束后，重启浏览器，再次打开证书，如下所示<br><img src="http://pkzsficup.bkt.clouddn.com/caOk.PNG" alt="image"></p>
+<p>此时浏览器已经可以使用ca证书来验证server.crt，已完成了很重要的一步，但我的chrome浏览器依然没有出现小锁</p>
+<h2 id="（2）缺少使用者备用名称"><a href="#（2）缺少使用者备用名称" class="headerlink" title="（2）缺少使用者备用名称"></a>（2）缺少使用者备用名称</h2><p>完成上一步后，浏览器的导航栏依然显示不安全，我打开开发者工具，查看security得知，是服务器证书缺少“使用者备用名称”所导致，如下图所示。<br><img src="http://pkzsficup.bkt.clouddn.com/missAltName.PNG" alt="image"><br>如何解决这个问题，我参考了这个博客（<a href="http://blog.51cto.com/colinzhouyj/1566438" target="_blank" rel="noopener">http://blog.51cto.com/colinzhouyj/1566438</a> ），即修改openssl.cnf的部分配置，前文“制作证书”步骤中已经整合过此处的配置内容。修改完，重新签署证书，重启apache2，再次运行，Subject Alternative Name missing的问题解决。</p>
+<h2 id="（3）IP验证不通过"><a href="#（3）IP验证不通过" class="headerlink" title="（3）IP验证不通过"></a>（3）IP验证不通过</h2><p>在上一步操作中，我添加完几条DNS之后，发现chrome依然报错，如下图所示<br><img src="http://pkzsficup.bkt.clouddn.com/missCert.PNG" alt="image"><br>我用的是虚拟机环境，没有域名解析，而是直接通过IP来访问站点的，又由于证书中不存在IP信息，是无法跟URL中的IP进行比对的，因此浏览器无法通过证书验证。该问题有两个解决方法</p>
+<p>（1）在证书中添加IP地址。在openssl.cnf中配置使用者可选名称时，添加一条IP地址，即可保证浏览器通过对IP的验证，重新签署配置运行后，结果如下<br><img src="http://pkzsficup.bkt.clouddn.com/ipSafeLock.PNG" alt="image"></p>
+<p>打开证书，使用者可用名称字段如下</p>
+<p><img src="http://pkzsficup.bkt.clouddn.com/altName.PNG" alt="image"></p>
+<p>（2）使用域名访问。在客户机的host文件中配置域名与IP的映射，直接使用域名来访问站点（证书中包含域名），即可通过验证，如下所示</p>
+<p><img src="http://pkzsficup.bkt.clouddn.com/domainSafeLock.PNG" alt="image"></p>
+<p>使用这两种方法的其中一种，迟迟不肯露面的小锁终于出现了，打开security也是一片绿色，大功告成。但是，要注意一点，不同浏览器对于证书的验证方式可能存在差异。按照我的操作，firefox依然无法验证，暂时没细究，但chrome和edge浏览器都可以完美运行。</p>
+
                 <hr>
                 
 
@@ -239,7 +257,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-使用自签证书搭建https"><span class="toc-text">1.使用自签证书搭建https</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#（1）安装apache2、openssl-ubuntu16-04"><span class="toc-text">（1）安装apache2、openssl(ubuntu16.04)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（2）制作证书"><span class="toc-text">（2）制作证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成自签发CA证书"><span class="toc-text">生成自签发CA证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成服务器证书"><span class="toc-text">生成服务器证书</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（3）配置apache2"><span class="toc-text">（3）配置apache2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-使用浏览器测试https"><span class="toc-text">2.使用浏览器测试https</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-验证证书客户端实现"><span class="toc-text">3.验证证书客户端实现</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-使用自签证书配置https"><span class="toc-text">1.使用自签证书配置https</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#（1）安装apache2、openssl-ubuntu16-04"><span class="toc-text">（1）安装apache2、openssl(ubuntu16.04)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（2）制作证书"><span class="toc-text">（2）制作证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成自签CA证书"><span class="toc-text">生成自签CA证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成服务器证书"><span class="toc-text">生成服务器证书</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（3）配置apache2"><span class="toc-text">（3）配置apache2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-使用浏览器测试https"><span class="toc-text">2.使用浏览器测试https</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#（1）客户端缺少CA证书"><span class="toc-text">（1）客户端缺少CA证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（2）缺少使用者备用名称"><span class="toc-text">（2）缺少使用者备用名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（3）IP验证不通过"><span class="toc-text">（3）IP验证不通过</span></a></li></ol></li></ol>
                 </div>
             </div>
         </div>
