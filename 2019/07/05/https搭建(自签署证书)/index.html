@@ -22,7 +22,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://curiousLei.github.io/2019/01/19/https搭建(自签署证书)/">
+    <link rel="canonical" href="http://curiousLei.github.io/2019/07/05/https搭建(自签署证书)/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -120,13 +120,13 @@
 
 
 <img class="wechat-title-img"
-     src="http://pkzsficup.bkt.clouddn.com/blog-bg-black-run.jpg">
+     src="http://qiniu.debrisflow.cn/blog-bg-black-run.jpg">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('http://pkzsficup.bkt.clouddn.com/blog-bg-black-run.jpg')
+        background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')
     }
 
     
@@ -142,7 +142,7 @@
                     <span class="meta">
                          作者 Lei da
                         <span>
-                          日期 2019-01-19
+                          日期 2019-07-05
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -167,7 +167,7 @@
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <p>上一篇博客探究了https（ssl）的原理，为了贯彻理论落实于实践的宗旨，本文将记录我搭建https的实操流程，使用Apache2+ubuntu+opensssl</p>
 <h1 id="1-使用自签证书配置https"><a href="#1-使用自签证书配置https" class="headerlink" title="1.使用自签证书配置https"></a>1.使用自签证书配置https</h1><p>一般来讲，正式的上线项目都需要购买域名，并且向权威机构申请证书。但本次工作属于测试环境，所以一切从简，我们使用openssl工具生自签名的CA证书以及服务器证书，来搭建https。具体步骤如下：</p>
-<h2 id="（1）安装apache2、openssl-ubuntu16-04"><a href="#（1）安装apache2、openssl-ubuntu16-04" class="headerlink" title="（1）安装apache2、openssl(ubuntu16.04)"></a>（1）安装apache2、openssl(ubuntu16.04)</h2><p>安装过程此处不做赘述，很简单。Apache2安装完成并启动后，通过<a href="http://ipaddress" target="_blank" rel="noopener">http://ipaddress</a> 来测试，如下图所示，说明安装成功<br><img src="http://pkzsficup.bkt.clouddn.com/apacheOk.png" alt="image"></p>
+<h2 id="（1）安装apache2、openssl-ubuntu16-04"><a href="#（1）安装apache2、openssl-ubuntu16-04" class="headerlink" title="（1）安装apache2、openssl(ubuntu16.04)"></a>（1）安装apache2、openssl(ubuntu16.04)</h2><p>安装过程此处不做赘述，很简单。Apache2安装完成并启动后，通过<a href="http://ipaddress" target="_blank" rel="noopener">http://ipaddress</a> 来测试，如下图所示，说明安装成功<br><img src="http://qiniu.debrisflow.cn/apacheOk.png" alt="image"></p>
 <h2 id="（2）制作证书"><a href="#（2）制作证书" class="headerlink" title="（2）制作证书"></a>（2）制作证书</h2><h3 id="生成自签CA证书"><a href="#生成自签CA证书" class="headerlink" title="生成自签CA证书"></a>生成自签CA证书</h3><ul>
 <li><p>生成CA私钥</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out ca.key 2048</span><br></pre></td></tr></table></figure>
@@ -215,19 +215,19 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SSLCertificateFile     /etc/ssl/certs/server.crt</span><br><span class="line">SSLCertificateKeyFile /etc/ssl/private/server.key</span><br><span class="line"># 在/etc/apache2/sites-available/default-ssl.conf中修改如上参数，确认证书和私钥的路径正确无误</span><br></pre></td></tr></table></figure>
 <p>重启apache2，搞定！</p>
 <h1 id="2-使用浏览器测试https"><a href="#2-使用浏览器测试https" class="headerlink" title="2.使用浏览器测试https"></a>2.使用浏览器测试https</h1><p>上述的制作证书步骤，已经是我测试结束、爬完坑后的正确教程，下文则是填坑记录。</p>
-<p>实际上，我一开始按照网上的方法搭建完https后，出现过一些问题。使用浏览器访问<a href="https://ipaddress" target="_blank" rel="noopener">https://ipaddress</a> 会跳出如下提示界面<br><img src="http://pkzsficup.bkt.clouddn.com/httpsNotSafe.PNG" alt="image"><br>实际上此时浏览器已获取到服务器证书server.crt，只是由于某些原因无法验证它。若选择高级选项中的“继续浏览”时，同样可以正常跳转至对应的页面，这时相当于强行让浏览器接受该证书，同时接受服务器公钥。在测试环境下，这样完全OK。但是，强迫症的我还是想让导航栏上出现安全的小锁，红叉叉看着很难受啊。</p>
+<p>实际上，我一开始按照网上的方法搭建完https后，出现过一些问题。使用浏览器访问<a href="https://ipaddress" target="_blank" rel="noopener">https://ipaddress</a> 会跳出如下提示界面<br><img src="http://qiniu.debrisflow.cn/httpsNotSafe.PNG" alt="image"><br>实际上此时浏览器已获取到服务器证书server.crt，只是由于某些原因无法验证它。若选择高级选项中的“继续浏览”时，同样可以正常跳转至对应的页面，这时相当于强行让浏览器接受该证书，同时接受服务器公钥。在测试环境下，这样完全OK。但是，强迫症的我还是想让导航栏上出现安全的小锁，红叉叉看着很难受啊。</p>
 <p>下面总结记录一下使用浏览器（chrome）测试的过程中遇到的问题以及解决方法</p>
-<h2 id="（1）客户端缺少CA证书"><a href="#（1）客户端缺少CA证书" class="headerlink" title="（1）客户端缺少CA证书"></a>（1）客户端缺少CA证书</h2><p>点击导航栏左侧的感叹号，查看证书，如下图所示<br><img src="http://pkzsficup.bkt.clouddn.com/caNotBlve.PNG" alt="image"><br>此时浏览器已获取到server.crt，由于其对应的CA证书不存在于“受信任的根证书机构”中，所以无法验证server.crt</p>
+<h2 id="（1）客户端缺少CA证书"><a href="#（1）客户端缺少CA证书" class="headerlink" title="（1）客户端缺少CA证书"></a>（1）客户端缺少CA证书</h2><p>点击导航栏左侧的感叹号，查看证书，如下图所示<br><img src="http://qiniu.debrisflow.cn/caNotBlve.PNG" alt="image"><br>此时浏览器已获取到server.crt，由于其对应的CA证书不存在于“受信任的根证书机构”中，所以无法验证server.crt</p>
 <p>我们需要将CA证书（上文使用OpenSSL生成的ca.crt）安装至客户端系统中的“受信任的根证书机构”中，保证浏览器可通过此CA证书来验证服务器证书server.crt。安装过程很简单，双击如下所示安装即可</p>
-<p><img src="http://pkzsficup.bkt.clouddn.com/installCert.PNG" alt="image"><br>安装结束后，重启浏览器，再次打开证书，如下所示<br><img src="http://pkzsficup.bkt.clouddn.com/caOk.PNG" alt="image"></p>
+<p><img src="http://qiniu.debrisflow.cn/installCert.PNG" alt="image"><br>安装结束后，重启浏览器，再次打开证书，如下所示<br><img src="http://qiniu.debrisflow.cn/caOk.PNG" alt="image"></p>
 <p>此时浏览器已经可以使用ca证书来验证server.crt，已完成了很重要的一步，但我的chrome浏览器依然没有出现小锁</p>
-<h2 id="（2）缺少使用者备用名称"><a href="#（2）缺少使用者备用名称" class="headerlink" title="（2）缺少使用者备用名称"></a>（2）缺少使用者备用名称</h2><p>完成上一步后，浏览器的导航栏依然显示不安全，我打开开发者工具，查看security得知，是服务器证书缺少“使用者备用名称”所导致，如下图所示。<br><img src="http://pkzsficup.bkt.clouddn.com/missAltName.PNG" alt="image"><br>如何解决这个问题，我参考了这个博客（<a href="http://blog.51cto.com/colinzhouyj/1566438" target="_blank" rel="noopener">http://blog.51cto.com/colinzhouyj/1566438</a> ），即修改openssl.cnf的部分配置，前文“制作证书”步骤中已经整合过此处的配置内容。修改完，重新签署证书，重启apache2，再次运行，Subject Alternative Name missing的问题解决。</p>
-<h2 id="（3）IP验证不通过"><a href="#（3）IP验证不通过" class="headerlink" title="（3）IP验证不通过"></a>（3）IP验证不通过</h2><p>在上一步操作中，我添加完几条DNS之后，发现chrome依然报错，如下图所示<br><img src="http://pkzsficup.bkt.clouddn.com/missCert.PNG" alt="image"><br>我用的是虚拟机环境，没有域名解析，而是直接通过IP来访问站点的，又由于证书中不存在IP信息，是无法跟URL中的IP进行比对的，因此浏览器无法通过证书验证。该问题有两个解决方法</p>
-<p>（1）在证书中添加IP地址。在openssl.cnf中配置使用者可选名称时，添加一条IP地址，即可保证浏览器通过对IP的验证，重新签署配置运行后，结果如下<br><img src="http://pkzsficup.bkt.clouddn.com/ipSafeLock.PNG" alt="image"></p>
+<h2 id="（2）缺少使用者备用名称"><a href="#（2）缺少使用者备用名称" class="headerlink" title="（2）缺少使用者备用名称"></a>（2）缺少使用者备用名称</h2><p>完成上一步后，浏览器的导航栏依然显示不安全，我打开开发者工具，查看security得知，是服务器证书缺少“使用者备用名称”所导致，如下图所示。<br><img src="http://qiniu.debrisflow.cn/missAltName.PNG" alt="image"><br>如何解决这个问题，我参考了这个博客（<a href="http://blog.51cto.com/colinzhouyj/1566438" target="_blank" rel="noopener">http://blog.51cto.com/colinzhouyj/1566438</a> ），即修改openssl.cnf的部分配置，前文“制作证书”步骤中已经整合过此处的配置内容。修改完，重新签署证书，重启apache2，再次运行，Subject Alternative Name missing的问题解决。</p>
+<h2 id="（3）IP验证不通过"><a href="#（3）IP验证不通过" class="headerlink" title="（3）IP验证不通过"></a>（3）IP验证不通过</h2><p>在上一步操作中，我添加完几条DNS之后，发现chrome依然报错，如下图所示<br><img src="http://qiniu.debrisflow.cn/missCert.PNG" alt="image"><br>我用的是虚拟机环境，没有域名解析，而是直接通过IP来访问站点的，又由于证书中不存在IP信息，是无法跟URL中的IP进行比对的，因此浏览器无法通过证书验证。该问题有两个解决方法</p>
+<p>（1）在证书中添加IP地址。在openssl.cnf中配置使用者可选名称时，添加一条IP地址，即可保证浏览器通过对IP的验证，重新签署配置运行后，结果如下<br><img src="http://qiniu.debrisflow.cn/ipSafeLock.PNG" alt="image"></p>
 <p>打开证书，使用者可用名称字段如下</p>
-<p><img src="http://pkzsficup.bkt.clouddn.com/altName.PNG" alt="image"></p>
+<p><img src="http://qiniu.debrisflow.cn/altName.PNG" alt="image"></p>
 <p>（2）使用域名访问。在客户机的host文件中配置域名与IP的映射，直接使用域名来访问站点（证书中包含域名），即可通过验证，如下所示</p>
-<p><img src="http://pkzsficup.bkt.clouddn.com/domainSafeLock.PNG" alt="image"></p>
+<p><img src="http://qiniu.debrisflow.cn/domainSafeLock.PNG" alt="image"></p>
 <p>使用这两种方法的其中一种，迟迟不肯露面的小锁终于出现了，打开security也是一片绿色，大功告成。但是，要注意一点，不同浏览器对于证书的验证方式可能存在差异。按照我的操作，firefox依然无法验证，暂时没细究，但chrome和edge浏览器都可以完美运行。</p>
 
                 <hr>
@@ -236,13 +236,13 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2019/01/23/linux常用命令总结/" data-toggle="tooltip" data-placement="top"
+                        <a href="/2019/07/05/linux常用命令总结/" data-toggle="tooltip" data-placement="top"
                            title="linux常用命令总结">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2019/01/06/https原理总结/" data-toggle="tooltip" data-placement="top"
+                        <a href="/2019/07/05/https原理总结/" data-toggle="tooltip" data-placement="top"
                            title="https原理总结">Next Post &rarr;</a>
                     </li>
                     
@@ -410,7 +410,7 @@
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!--wechat title img-->
-<img class="wechat-title-img" src="http://pkzsficup.bkt.clouddn.com/akane.jpg">
+<img class="wechat-title-img" src="http://qiniu.debrisflow.cn/akane.jpg">
 </body>
 
 </html>

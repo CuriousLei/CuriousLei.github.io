@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        https原理总结｜Leida&#39;s blog
+        linux常用命令总结｜Leida&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://curiousLei.github.io/2019/01/06/https原理总结/">
+    <link rel="canonical" href="http://curiousLei.github.io/2019/07/05/linux常用命令总结/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -120,13 +120,13 @@
 
 
 <img class="wechat-title-img"
-     src="http://pkzsficup.bkt.clouddn.com/blog-bg-black-run.jpg">
+     src="http://qiniu.debrisflow.cn/blog-bg-black-run.jpg">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('http://pkzsficup.bkt.clouddn.com/blog-bg-black-run.jpg')
+        background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')
     }
 
     
@@ -137,12 +137,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>https原理总结</h1>
+                    <h1>linux常用命令总结</h1>
                     
                     <span class="meta">
                          作者 Lei da
                         <span>
-                          日期 2019-01-06
+                          日期 2019-07-05
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            https原理总结
+            linux常用命令总结
         </span>
     </div>
 </header>
@@ -165,62 +165,67 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>最近在公司项目的服务器上做一些内部接口，要求使用https，于是花时间研究了一波。我们熟知的http在传输时未对数据进行加密，在传输一些敏感信息时存在着不小的安全隐患。因此，https在http的基础上加上了SSL（Secure Sockets Layer）加密，以保障数据的安全传输。如今使用的TLS实际上是SSL的升级版本。具体有关https的概念可参考百科<br><a href="https://baike.baidu.com/item/https?fr=aladdin" target="_blank" rel="noopener">https介绍</a></p>
-<h1 id="1-https原理探究"><a href="#1-https原理探究" class="headerlink" title="1.https原理探究"></a>1.https原理探究</h1><p>https的保障信息安全的机制，其实用一句话就能概括：client与server通过非对称加密来协商一个对称秘钥，然后CS两端使用该对称秘钥来进行数据的加密解密，完成数据交互。所以数据传输时，实际上走的是对称加密。当然理解这句话前提，需要明白对称和非对称加密的原理，本文不做讨论。</p>
-<h2 id="原理概况"><a href="#原理概况" class="headerlink" title="原理概况"></a>原理概况</h2><p>SSL加密机制的大致过程：</p>
-<ul>
-<li>client发送请求</li>
-<li>server返回证书</li>
-<li>client验证并取出证书中的公钥</li>
-<li>client生成随机数，并使用服务器公钥将其加密，把得到的密文发送给server</li>
-<li>server使用私钥解密，得到随机数</li>
-<li>两端各自通过随机数生成对称秘钥，协商完成</li>
+                <ul>
+<li>根目录下查找名称前缀为my的文件(文件夹)</li>
 </ul>
-<h2 id="数字证书与数字签名"><a href="#数字证书与数字签名" class="headerlink" title="数字证书与数字签名"></a>数字证书与数字签名</h2><p>在详细介绍握手环节之前，我想先说说数字数字证书的起因及原理，数字证书是整个SSL加密的核心与纽带。首先，在使用非对称加密传输之前，客户端需要获取服务器公钥，这里存在一种攻击方式，即中间方使用自己的公钥替换服务器的公钥发送给客户端，再通过自己的私钥获取客户端传来的非对称加密内容，从而实现篡改以及窃听。为了方便理解，网上有一张图我直接拿来用了，如下所示。<br><img src="http://pkzsficup.bkt.clouddn.com/https_attack.png" alt="image"><br>为了防止获取公钥过程遭到第三方的掉包等之类的破坏，于是便有了证书机制，下图为服务器证书的签署以及验证的大致流程。<br><img src="http://pkzsficup.bkt.clouddn.com/https_certificate.png" alt="image"></p>
-<blockquote>
-<p>证书包含三部分内容</p>
-</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find / -name &apos;my&apos;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>证书内容（服务器公钥、服务器信息等）</li>
-<li>加密算法（加密算法、哈希算法）</li>
-<li>密文（使用哈希算法计算证书内容得到哈希摘要，再使用CA私钥加密该摘要即得到密文，该过程称为数字签名）</li>
+<li>linux向linux复制文件，-P（大写P）表示端口号（默认22）</li>
 </ul>
-<blockquote>
-<p>验证数字证书</p>
-</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scp -P 2233 passwordModify_encrypt.php     root@118.192.66.57:/var/www/opensips-cp/web/</span><br></pre></td></tr></table></figure>
 <ul>
-<li>客户端验证服务器证书时，需要获取到你的上一级CA证书，从而得到取CA公钥，使用CA公钥对证书中的密文解密得到哈希摘要，同时客户端使用同样的哈希算法对服务器证书内容计算得到另一个哈希摘要，若这两个摘要相等，则证明证书合法。</li>
+<li>ssh远程登录（小写p）</li>
 </ul>
-<p>上述的哈希签名也称为数字指纹法，该方法的精髓在于，相同的明文通过哈希计算得到的摘要，一定是相同的，而只要两份明文只要有一丝丝区别，其对应的哈希值也是不同的。因此，若第三方替换了证书中的公钥，根据证书内容计算出的新的摘要一定与密文中的摘要有所差异的，故可以轻松地判断证书不合法。</p>
-<blockquote>
-<p>疑问</p>
-</blockquote>
-<p>（1）既然是使用上级CA证书来验证服务器证书，那如何证明上级CA证书的合法性？</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -p 2233 root@118.192.66.57</span><br></pre></td></tr></table></figure>
 <ul>
-<li>这涉及到一个证书信任链的问题。上级证书通过更高一级的CA根证书来确定其合法性，这是一个递归向上的过程，直到最顶层根证书。顶层CA根证书是整个安全体系的根本。</li>
+<li>windows下向linux拷贝文件</li>
 </ul>
-<p>（2）前文提到的攻击方式，只替换公钥显然是不行，那如果第三方把整个证书都替换成自己的证书（因为CA机构可以给任何人签名，黑客也可以），这样的话客户端的验证是不是可以通过？</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pscp -l leida file.zip 192.168.50.24:/home/leida/</span><br></pre></td></tr></table></figure>
 <ul>
-<li>答案当然是否定的，很简单，因为证书内容里的服务器信息是唯一的、不可复制的，例如域名，若替换整个证书，域名也会变成黑客自己的域名，浏览器不会接受域名和请求内容不匹配的证书。比如说，浏览器请求了 baidu.com，结果返回了个google.com的证书，毫无疑问会立即排除掉。</li>
+<li>查找目录下包含某一字段的文件</li>
 </ul>
-<p>保证了服务器公钥安全抵达客户端手中，后续的对话秘钥的协商便也能顺理成章地进行。因此https所采用的SSL机制是绝对安全的，几乎没有人能够破解。当然，有得必有失，https花费的开销也远高于http。</p>
-<h2 id="SSL握手过程"><a href="#SSL握手过程" class="headerlink" title="SSL握手过程"></a>SSL握手过程</h2><blockquote>
-<p>https握手原理图</p>
-</blockquote>
-<p><img src="http://pkzsficup.bkt.clouddn.com/https_handshake.png" alt="image"><br>理解了上文所讲的证书机制，其实SSL加密机制也基本容易理解了，下面细究一下SSL握手过程，此处结合上方交互原理图进行分析<br>（1） Client Helllo。客户端发送初次请求，请求内容包含版本信息，加密套件候选列表，压缩算法候选列表，随机数random_1，扩展字段等信息，以明文传输；</p>
-<p>（2）服务器选择客户端支持的加密套件、压缩算法、协议版本等，生成随机数random_2；</p>
-<p>（3）服务器将上述算法以及随机数等发送给客户端；</p>
-<p>（4）服务器发送服务器数字证书；</p>
-<p>（5）客户端接收服务器选择的算法以及随机数等，验证数字证书。若证书验证通过，或者用户接受了不可信证书，客户端获取服务器公钥，同时会生成随机数random_3，并使用服务器公钥加密该随机数得到密文；</p>
-<p>（6）客户端将第五步得到的密文传给服务器，由于公钥加密的内容只能使用私钥解开，所以random_3无法被窃听；</p>
-<p>（7）Change cipher Spec。客户端通知服务器协商完成；</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &quot;client&quot; ./ -nr</span><br></pre></td></tr></table></figure>
 <ul>
-<li>此时客户端已存有三个随机数random_1、random_2和random_3，前两个是可以被截获的，第三个是私密的，根据这三者可计算得出对话秘钥，即enc_key=Fuc(random_1, random_2, random_3)</li>
+<li>iptables添加开放端口</li>
 </ul>
-<p>（8）客户端结合之前所有通信参数的 hash 值与其它相关信息生成一段数据，并使用对话秘钥enc_key和算法将其加密，得到密文encrypted_handshake_message，将其发送给服务器进行验证；</p>
-<p>（9）服务器使用私钥解密第六步得到的密文，得到随机数random_3，此时服务器也拥有了三个随机数random_1、random_2和random_3，同样可计算出对话秘钥enc_key，至此双方共享对称加密秘钥的目的已达成；计算之前所有接收信息的 hash 值，然后解密客户端发送的 encrypted_handshake_message，验证数据和密钥正确性;</p>
-<p>（10）类似7和8，服务器通知客户端协商完成，同时计算发送encrypted_handshake_message。客户端以同样的方式验证encrypted_handshake_message，握手完成。</p>
-<p>完成握手之后，服务器和客户端都使用相同的对话秘钥enc_key，对消息内容进行加密，实现安全通信。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iptables -A INPUT -p tcp --dport 80 -j ACCEPT</span><br><span class="line">service iptables save</span><br><span class="line">service iptables restart</span><br><span class="line"></span><br><span class="line">-A 指append添加规则(末尾)，-I指插入，-D指删除</span><br><span class="line">INPUT指输入数据包，相对的是OUTPUT</span><br><span class="line">--dport指目的端口，相对的是sport源端口</span><br><span class="line">-j ACCEPT 表示动作，相对的是DROP</span><br><span class="line">注意：新添加的规则要插入到 RH-Firewall-1-INPUT 之前才能生效，具体原因有待探究</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ubuntu下卸载apache2</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt purge remove apache2</span><br><span class="line">apt purge remove apache2.2-common</span><br><span class="line">apt autoremove</span><br><span class="line"></span><br><span class="line">find /etc/ -name &quot;*apache*&quot; | xargs rm -rf</span><br><span class="line">rm -rf /var/www</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看linux版本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat /etc/issue</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看仓库包</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum repolist all</span><br></pre></td></tr></table></figure>
+<ul>
+<li>centos7加载本地光盘yum源</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom/ /mnt/</span><br><span class="line">cd /etc/</span><br><span class="line">mv yum.repos.d yum.repos.d.bak</span><br><span class="line">mkdir yum.repos.d</span><br><span class="line">vim yum.repos.d/Centos-Local.repo</span><br><span class="line"></span><br><span class="line">[Local]</span><br><span class="line">name=Local Yum</span><br><span class="line">baseurl=file:///mnt/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line"></span><br><span class="line">yum clean </span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
+<ul>
+<li>centos修改root密码<br><a href="https://blog.csdn.net/akipa11/article/details/81395386" target="_blank" rel="noopener">https://blog.csdn.net/akipa11/article/details/81395386</a></li>
+<li>nginx相关命令</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line"># 启动</span><br><span class="line">/usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf</span><br><span class="line"># 检查配置是否正确</span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br><span class="line"># 修改配置后使配置生效</span><br></pre></td></tr></table></figure>
+<ul>
+<li>centos7命令行和图形界面互相切换</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/inittab</span><br><span class="line">systemctl get-default </span><br><span class="line">systemctl set-default multi-user.target</span><br><span class="line">systemctl set-default multi-user.target</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建多层文件夹</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p demoCA/newcerts</span><br><span class="line">touch ./demoCA/index.txt ./demoCA/serial #创建多个文件</span><br></pre></td></tr></table></figure>
+<ul>
+<li>grep满足多个可选关键字</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep -E &quot;me|data&quot; meDec.php</span><br></pre></td></tr></table></figure>
+<ul>
+<li>grep排除字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep -v &quot;message&quot; meDec.php</span><br></pre></td></tr></table></figure>
 
                 <hr>
                 
@@ -228,14 +233,14 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2019/01/19/https搭建(自签署证书)/" data-toggle="tooltip" data-placement="top"
-                           title="https搭建(自签名证书)">&larr; Previous Post</a>
+                        <a href="/2019/07/05/ruanzhuRecord/" data-toggle="tooltip" data-placement="top"
+                           title="软著流程记录">&larr; Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2018/07/09/用户评论情感极性判别/" data-toggle="tooltip" data-placement="top"
-                           title="用户评论情感极性判别">Next Post &rarr;</a>
+                        <a href="/2019/07/05/https搭建(自签署证书)/" data-toggle="tooltip" data-placement="top"
+                           title="https搭建(自签名证书)">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -254,7 +259,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-https原理探究"><span class="toc-text">1.https原理探究</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理概况"><span class="toc-text">原理概况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数字证书与数字签名"><span class="toc-text">数字证书与数字签名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSL握手过程"><span class="toc-text">SSL握手过程</span></a></li></ol></li></ol>
+                    
                 </div>
             </div>
         </div>
@@ -402,7 +407,7 @@
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!--wechat title img-->
-<img class="wechat-title-img" src="http://pkzsficup.bkt.clouddn.com/akane.jpg">
+<img class="wechat-title-img" src="http://qiniu.debrisflow.cn/akane.jpg">
 </body>
 
 </html>
