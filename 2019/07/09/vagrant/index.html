@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        软著流程记录｜Leida&#39;s blog
+        vagrant相关｜Leida&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://curiousLei.github.io/2019/07/05/ruanzhuRecord/">
+    <link rel="canonical" href="http://curiousLei.github.io/2019/07/09/vagrant/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,12 +137,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>软著流程记录</h1>
+                    <h1>vagrant相关</h1>
                     
                     <span class="meta">
                          作者 Lei da
                         <span>
-                          日期 2019-07-05
+                          日期 2019-07-09
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            软著流程记录
+            vagrant相关
         </span>
     </div>
 </header>
@@ -165,38 +165,25 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h2 id="软著申请流程"><a href="#软著申请流程" class="headerlink" title="软著申请流程"></a>软著申请流程</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.准备材料</span><br><span class="line">http://yewu.bjppb.gov.cn/bjppb/member/login.do?ut=cpy_soft</span><br><span class="line">账户：北京林业大学</span><br><span class="line">密码：12345678</span><br><span class="line">填写申报表格（必须认真填写）</span><br><span class="line">2.导师签字：申请表、用印批办单、知识产权承诺书</span><br><span class="line">3.张平盖章：用印批办单、知识产权承诺书</span><br><span class="line">4.科技处签字：310找老师，说申请软著，就有人说怎么弄。</span><br><span class="line">5.学校盖章：红楼310找老师签完字；去101盖学校公章，拿学校法人复印件。</span><br><span class="line">6.交付版权局：北京市政服务中心，一层大厅。</span><br><span class="line"></span><br><span class="line">学校盖章的：一份网上打印的申请书、法人复印件、两个声明。</span><br><span class="line">院里盖章的：用印批办单，交给顾京的申请书。</span><br></pre></td></tr></table></figure>
-<h2 id="问题及解决方法"><a href="#问题及解决方法" class="headerlink" title="问题及解决方法"></a>问题及解决方法</h2><h3 id="1-打印申请表"><a href="#1-打印申请表" class="headerlink" title="1.打印申请表"></a>1.打印申请表</h3><ul>
-<li>填表的时候，在开发者工具中把IE的内核版本调低（仿真一栏中，文档模式和用户代理字符串都改成IE7）即可正常填写；</li>
-<li>打印的时候，同样把IE的内核版本调低（降成IE7貌似还不够，试一下全部调成IE5），即可打印成pdf下载下来，然后检查一下，看看有没有错版或者多页少页（当然也可以直接打印成纸质版）。</li>
+                <ul>
+<li>无法挂载共享目录，报错如下</li>
 </ul>
-<h3 id="2-文档格式"><a href="#2-文档格式" class="headerlink" title="2.文档格式"></a>2.文档格式</h3><ul>
-<li><p>在线填报网站上的“申报须知”（填表的前一步）中有格式说明，仔细读一读，严格按照它的来写，就基本没问题了。两份文档（软件说明和源程序）的格式要求如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">3、源程序 1份（注：不要装订）</span><br><span class="line"></span><br><span class="line">（1）按源程序前30页和源程序最后30页提交，第1页为起始页，第60页为结束页。不足60页的需要提交全部源程序。每页不少于50行（结束页可少于50行）。 在每页的右上角通过电脑以阿拉伯数字连续标注页码。除第60页外，每页不能出现半页。源程序须添加页眉，页眉处务必写清软件的名称（与全称或简称一致）及版本号。</span><br><span class="line">（2）源程序中作者应是著作权人。</span><br><span class="line">（3）源程序中日期须在开发完成日期之前。</span><br><span class="line">（4）源程序中的名称须与申请表中全称或简称一致。</span><br><span class="line"></span><br><span class="line">4、文档 1份（注：不要装订）</span><br><span class="line"></span><br><span class="line">（1）设计说明书、用户手册、操作手册、使用说明等（任选一种）。</span><br><span class="line">（2）按文档前30页和文档最后30页提交。第1页为起始页，第60页为结束页。不足60页的需要提交全部文档。每页不少于30行（页中有插图或结束页可少于30行）。在正文的右上角通过电脑以阿拉伯数字标注连续页码。除第60页外，每页不能出现半页。文档须添加页眉，页眉处务必写清软件的名称（与全称或简称一致）及版本号。文档可以不要封面，但必须在文档的正文第一页标题中写清楚文档的种类。（比如：微软操作系统使用说明书；微软操作系统设计说明书；微软操作系统用户手册；微软操作系统操作手册）。</span><br><span class="line">（3）文档中作者应是著作权人。</span><br><span class="line">（4）文档中的日期须在软件开发完成日期之前。</span><br><span class="line">（5）文档中的名称须与申请表中全称或简称一致。</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>申请表中软件名称尽量写xxx平台，xxx软件，xxx系统，否则可能不给过；所有材料中软件名字要统一。</p>
-</li>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Vagrant was unable to mount VirtualBox shared folders. This is usually</span><br><span class="line">because the filesystem &quot;vboxsf&quot; is not available. This filesystem is</span><br><span class="line">made available via the VirtualBox Guest Additions and kernel module.</span><br><span class="line">Please verify that these guest additions are properly installed in the</span><br><span class="line">guest. This is not a bug in Vagrant and is usually caused by a faulty</span><br><span class="line">Vagrant box. For context, the command attempted was:</span><br><span class="line"></span><br><span class="line">mount -t vboxsf -o uid=1000,gid=1000 vagrant_app /vagrant/app</span><br><span class="line"></span><br><span class="line">The error output from the command was:</span><br><span class="line"></span><br><span class="line">mount: unknown filesystem type &apos;vboxsf&apos;</span><br></pre></td></tr></table></figure>
+<p><a href="https://zj-john.github.io/tips/cjm68jli7009h1of0ci0qt2ur.html" target="_blank" rel="noopener">解决办法点击此处</a></p>
+<ul>
+<li>vgrant常用命令</li>
 </ul>
-<h3 id="3-市政厅办理注意"><a href="#3-市政厅办理注意" class="headerlink" title="3.市政厅办理注意"></a>3.市政厅办理注意</h3><ul>
-<li>身份证复印件正反面在同一页，单面打印；</li>
-<li>如果被指出文档格式问题，不用慌，可以想办法当场改一改，市政厅楼上可以打印；但如果申请表有问题，就必须再跑一趟了，因为要重新盖章（拿着新的申请表直接去红楼101盖章即可，旧的会被老师撕掉）；</li>
-<li>如果工作人员建议你直接去版权中心办软著，不用理她，因为版权中心的电话永远打不通，去了之后还会发现那边要的申请表格式和咱们的不一样（要带条码的那种）。</li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vagrant init      # 初始化</span><br><span class="line"></span><br><span class="line">$ vagrant up        # 启动虚拟机</span><br><span class="line">$ vagrant halt      # 关闭虚拟机</span><br><span class="line">$ vagrant reload    # 重启虚拟机</span><br><span class="line">$ vagrant ssh       # SSH 至虚拟机</span><br><span class="line">$ vagrant suspend   # 挂起虚拟机</span><br><span class="line">$ vagrant resume    # 唤醒虚拟机</span><br><span class="line">$ vagrant status    # 查看虚拟机运行状态</span><br><span class="line">$ vagrant destroy   # 销毁当前虚拟机</span><br><span class="line"></span><br><span class="line">$ vagrant box list    # 查看本地box列表</span><br><span class="line">$ vagrant box add     # 添加box到列表</span><br><span class="line"></span><br><span class="line">$ vagrant box remove  # 从box列表移除</span><br></pre></td></tr></table></figure>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/07/09/gitCommands/" data-toggle="tooltip" data-placement="top"
-                           title="git常用命令总结">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2019/07/05/linux常用命令总结/" data-toggle="tooltip" data-placement="top"
-                           title="linux常用命令总结">Next Post &rarr;</a>
+                        <a href="/2019/07/09/gitCommands/" data-toggle="tooltip" data-placement="top"
+                           title="git常用命令总结">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -215,7 +202,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#软著申请流程"><span class="toc-text">软著申请流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题及解决方法"><span class="toc-text">问题及解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-打印申请表"><span class="toc-text">1.打印申请表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-文档格式"><span class="toc-text">2.文档格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-市政厅办理注意"><span class="toc-text">3.市政厅办理注意</span></a></li></ol></li></ol>
+                    
                 </div>
             </div>
         </div>
