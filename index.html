@@ -265,6 +265,40 @@
 
 <div class="post-preview "
      style="background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')">
+    <a href="/2019/07/10/dockerCommands/">
+        <h2 class="post-title">
+            docker相关命令总结
+        </h2>
+        <p class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> 2019-07-10
+        </p>
+        
+        <div class="post-content-preview">
+            <p>
+                
+启动容器
+
+1docker run --name tomcat --net=host -d tomcat:latest
+
+docker容器开启一个终端
+
+1docker exec -it testv4 /bin/bash
+
+docker私有网络创建容器
+
+1docker run --name ..
+            </p>
+        </div>
+    </a>
+
+</div>
+
+<hr>
+
+
+
+<div class="post-preview "
+     style="background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')">
     <a href="/2019/07/09/vagrant/">
         <h2 class="post-title">
             vagrant相关
@@ -357,11 +391,11 @@ git config --global user.name &quot;leida&quot;git config --global user.email &q
                 
 根目录下查找名称前缀为my的文件(文件夹)
 
-find / -name &apos;my&apos;
+1find / -name &apos;my&apos;
 
 linux向linux复制文件，-P（大写P）表示端口号（默认22）
 
-scp -P 2233 passwordModify_encrypt.php     root@118.192.66...
+1scp -P 2233 passwordModify_encrypt.php     root@118.192.6..
             </p>
         </div>
     </a>
@@ -432,33 +466,6 @@ scp -P 2233 passwordModify_encrypt.php     root@118.192.66...
         <div class="post-content-preview">
             <p>
                 Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer i..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview "
-     style="background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')">
-    <a href="/2018/07/09/用户评论情感极性判别/">
-        <h2 class="post-title">
-            用户评论情感极性判别
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-07-09
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                本文章介绍百度点石平台上的一个训练赛的赛题代码，赛题是包括用户评论文字的情感判别的分类问题，赛题链接戳此处
-数据预处理
-使用测试数据和训练数据生成语料库
-
-import numpy as npimport jiebaimport codecs# 该函数作用是读取文件def load_data(f..
             </p>
         </div>
     </a>

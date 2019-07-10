@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        vagrant相关｜Leida&#39;s blog
+        docker相关命令总结｜Leida&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://curiousLei.github.io/2019/07/09/vagrant/">
+    <link rel="canonical" href="http://curiousLei.github.io/2019/07/10/dockerCommands/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,12 +137,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>vagrant相关</h1>
+                    <h1>docker相关命令总结</h1>
                     
                     <span class="meta">
                          作者 Lei da
                         <span>
-                          日期 2019-07-09
+                          日期 2019-07-10
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            vagrant相关
+            docker相关命令总结
         </span>
     </div>
 </header>
@@ -166,29 +166,57 @@
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <ul>
-<li>无法挂载共享目录，报错如下</li>
+<li>启动容器</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Vagrant was unable to mount VirtualBox shared folders. This is usually</span><br><span class="line">because the filesystem &quot;vboxsf&quot; is not available. This filesystem is</span><br><span class="line">made available via the VirtualBox Guest Additions and kernel module.</span><br><span class="line">Please verify that these guest additions are properly installed in the</span><br><span class="line">guest. This is not a bug in Vagrant and is usually caused by a faulty</span><br><span class="line">Vagrant box. For context, the command attempted was:</span><br><span class="line"></span><br><span class="line">mount -t vboxsf -o uid=1000,gid=1000 vagrant_app /vagrant/app</span><br><span class="line"></span><br><span class="line">The error output from the command was:</span><br><span class="line"></span><br><span class="line">mount: unknown filesystem type &apos;vboxsf&apos;</span><br></pre></td></tr></table></figure>
-<p><a href="https://zj-john.github.io/tips/cjm68jli7009h1of0ci0qt2ur.html" target="_blank" rel="noopener">解决办法点击此处</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name tomcat --net=host -d tomcat:latest</span><br></pre></td></tr></table></figure>
 <ul>
-<li>vgrant常用命令</li>
+<li>docker容器开启一个终端</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vagrant init      # 初始化</span><br><span class="line"></span><br><span class="line">$ vagrant up        # 启动虚拟机</span><br><span class="line">$ vagrant halt      # 关闭虚拟机</span><br><span class="line">$ vagrant reload    # 重启虚拟机</span><br><span class="line">$ vagrant ssh       # SSH 至虚拟机</span><br><span class="line">$ vagrant suspend   # 挂起虚拟机</span><br><span class="line">$ vagrant resume    # 唤醒虚拟机</span><br><span class="line">$ vagrant status    # 查看虚拟机运行状态</span><br><span class="line">$ vagrant destroy   # 销毁当前虚拟机</span><br><span class="line"></span><br><span class="line">$ vagrant box list    # 查看本地box列表</span><br><span class="line">$ vagrant box add     # 添加box到列表</span><br><span class="line"></span><br><span class="line">$ vagrant box remove  # 从box列表移除</span><br></pre></td></tr></table></figure>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it testv4 /bin/bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>docker私有网络创建容器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name voipBridge -e TZ=&quot;Asia/Shanghai&quot; --cap-add=NET_ADMIN --mount src=voip,dst=/voip --network=mynet --ip 172.18.12.2 -p 8081:8081 -p 8082:8082 -p 7443:7443 -p 5090:5090 -p 25060:25060 -p 25061:25061 -p 5061:5061 -p 5066:5066 -p 3306:3306 -p 8021:8021 -p 5070:5070 -p  444:443 -p 81:80 -p 8443:8443 -p 5070:5070/udp -p 5090:5090/udp -p 15060:15060/udp -p 1337:1337/udp -itd centos:6.10 /bin/bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>docker开启一个终端</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it testv4 /bin/bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看正在监听的端口</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nltp</span><br></pre></td></tr></table></figure>
+<ul>
+<li>docker镜像导入导出两种方法不可混用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker save ubuntu:load&gt;/root/ubuntu.tar</span><br><span class="line">docker load&lt;ubuntu.tar</span><br><span class="line"></span><br><span class="line">docker export 98ca36&gt; ubuntu.tar</span><br><span class="line">cat ubuntu.tar | sudo docker import - ubuntu:import</span><br></pre></td></tr></table></figure>
+<ul>
+<li>docker 运行mysql容器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql4 -e MYSQL_ROOT_PASSWORD=1234567  -d -P mysql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>docker 挂载volume</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql4 -e MYSQL_ROOT_PASSWORD=1234567 --mount src=mydata,dst=/var/lib/mysql -d -P mysql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>docker registry获取存放镜像信息</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl http://127.0.0.1:5000/v2/_catalog</span><br><span class="line">curl http://127.0.0.1:5000/v2/centos/tags/list</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>docker使用entrypoint时，首行一定要加#!/bin/bash，末尾行一定要加tail -f </p>
+</li>
+<li><p>docker运行registry命令</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name registry --restart=always --mount src=myregistry,dst=/var/lib/registry -p 5000:5000 -d registry:latest</span><br></pre></td></tr></table></figure>
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/07/10/dockerCommands/" data-toggle="tooltip" data-placement="top"
-                           title="docker相关命令总结">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2019/07/09/gitCommands/" data-toggle="tooltip" data-placement="top"
-                           title="git常用命令总结">Next Post &rarr;</a>
+                        <a href="/2019/07/09/vagrant/" data-toggle="tooltip" data-placement="top"
+                           title="vagrant相关">Next Post &rarr;</a>
                     </li>
                     
                 </ul>

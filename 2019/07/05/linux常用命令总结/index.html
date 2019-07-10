@@ -168,177 +168,149 @@
                 <ul>
 <li>根目录下查找名称前缀为my的文件(文件夹)</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find / -name &apos;my&apos;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name &apos;my&apos;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>linux向linux复制文件，-P（大写P）表示端口号（默认22）</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scp -P 2233 passwordModify_encrypt.php     root@118.192.66.57:/var/www/opensips-cp/web/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P 2233 passwordModify_encrypt.php     root@118.192.66.57:/var/www/opensips-cp/web/</span><br></pre></td></tr></table></figure>
 <ul>
 <li>ssh远程登录（小写p）</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -p 2233 root@118.192.66.57</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 2233 root@118.192.66.57</span><br></pre></td></tr></table></figure>
 <ul>
 <li>windows下向linux拷贝文件</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pscp -l leida file.zip 192.168.50.24:/home/leida/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pscp -l leida file.zip 192.168.50.24:/home/leida/</span><br></pre></td></tr></table></figure>
 <ul>
 <li>查找目录下包含某一字段的文件</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &quot;client&quot; ./ -nr</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &quot;client&quot; ./ -nr</span><br></pre></td></tr></table></figure>
 <ul>
 <li>iptables添加开放端口</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iptables -A INPUT -p tcp --dport 80 -j ACCEPT</span><br><span class="line">service iptables save</span><br><span class="line">service iptables restart</span><br><span class="line"></span><br><span class="line">-A 指append添加规则(末尾)，-I指插入，-D指删除</span><br><span class="line">INPUT指输入数据包，相对的是OUTPUT</span><br><span class="line">--dport指目的端口，相对的是sport源端口</span><br><span class="line">-j ACCEPT 表示动作，相对的是DROP</span><br><span class="line">注意：新添加的规则要插入到 RH-Firewall-1-INPUT 之前才能生效，具体原因有待探究</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp --dport 80 -j ACCEPT</span><br><span class="line">service iptables save</span><br><span class="line">service iptables restart</span><br><span class="line"></span><br><span class="line">-A 指append添加规则(末尾)，-I指插入，-D指删除</span><br><span class="line">INPUT指输入数据包，相对的是OUTPUT</span><br><span class="line">--dport指目的端口，相对的是sport源端口</span><br><span class="line">-j ACCEPT 表示动作，相对的是DROP</span><br><span class="line">注意：新添加的规则要插入到 RH-Firewall-1-INPUT 之前才能生效，具体原因有待探究</span><br></pre></td></tr></table></figure>
 <ul>
 <li>ubuntu下卸载apache2</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt purge remove apache2</span><br><span class="line">apt purge remove apache2.2-common</span><br><span class="line">apt autoremove</span><br><span class="line"></span><br><span class="line">find /etc/ -name &quot;*apache*&quot; | xargs rm -rf</span><br><span class="line">rm -rf /var/www</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apt purge remove apache2</span><br><span class="line">apt purge remove apache2.2-common</span><br><span class="line">apt autoremove</span><br><span class="line"></span><br><span class="line">find /etc/ -name &quot;*apache*&quot; | xargs rm -rf</span><br><span class="line">rm -rf /var/www</span><br></pre></td></tr></table></figure>
 <ul>
 <li>查看linux版本</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat /etc/issue#适合所有版本系统</span><br><span class="line">cat /etc/redhat-release#这种方法只适合Redhat系的Linux</span><br><span class="line">uname -a#查看系统内核版本</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue#适合所有版本系统</span><br><span class="line">cat /etc/redhat-release#这种方法只适合Redhat系的Linux</span><br><span class="line">uname -a#查看系统内核版本</span><br></pre></td></tr></table></figure>
 <ul>
 <li>查看仓库包</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum repolist all</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum repolist all</span><br></pre></td></tr></table></figure>
 <ul>
 <li>centos7加载本地光盘yum源</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/cdrom/ /mnt/</span><br><span class="line">cd /etc/</span><br><span class="line">mv yum.repos.d yum.repos.d.bak</span><br><span class="line">mkdir yum.repos.d</span><br><span class="line">vim yum.repos.d/Centos-Local.repo</span><br><span class="line"></span><br><span class="line">[Local]</span><br><span class="line">name=Local Yum</span><br><span class="line">baseurl=file:///mnt/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line"></span><br><span class="line">yum clean </span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/cdrom/ /mnt/</span><br><span class="line">cd /etc/</span><br><span class="line">mv yum.repos.d yum.repos.d.bak</span><br><span class="line">mkdir yum.repos.d</span><br><span class="line">vim yum.repos.d/Centos-Local.repo</span><br><span class="line"></span><br><span class="line">[Local]</span><br><span class="line">name=Local Yum</span><br><span class="line">baseurl=file:///mnt/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line"></span><br><span class="line">yum clean </span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
 <ul>
 <li>centos修改root密码<br><a href="https://blog.csdn.net/akipa11/article/details/81395386" target="_blank" rel="noopener">https://blog.csdn.net/akipa11/article/details/81395386</a></li>
 <li>nginx相关命令</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line"># 启动</span><br><span class="line">/usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf</span><br><span class="line"># 检查配置是否正确</span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br><span class="line"># 修改配置后使配置生效</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line"># 启动</span><br><span class="line">/usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf</span><br><span class="line"># 检查配置是否正确</span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br><span class="line"># 修改配置后使配置生效</span><br></pre></td></tr></table></figure>
 <ul>
 <li>centos7命令行和图形界面互相切换</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/inittab</span><br><span class="line">systemctl get-default </span><br><span class="line">systemctl set-default multi-user.target</span><br><span class="line">systemctl set-default multi-user.target</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/inittab</span><br><span class="line">systemctl get-default </span><br><span class="line">systemctl set-default multi-user.target</span><br><span class="line">systemctl set-default multi-user.target</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>创建多层文件夹</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p demoCA/newcerts</span><br><span class="line">touch ./demoCA/index.txt ./demoCA/serial #创建多个文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p demoCA/newcerts</span><br><span class="line">touch ./demoCA/index.txt ./demoCA/serial #创建多个文件</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>grep满足多个可选关键字</p>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep -E &quot;me|data&quot; meDec.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E &quot;me|data&quot; meDec.php</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>grep排除字段</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep -v &quot;message&quot; meDec.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -v &quot;message&quot; meDec.php</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>删除多级目录下同一格式的文件</p>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find ./ -name *.o -exec rm -rf &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ./ -name *.o -exec rm -rf &#123;&#125; \;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>apache2加载php7.0</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt purge libapache2-mod-php7.0 libapache2-mod-php</span><br><span class="line">apt install libapache2-mod-php7.0 libapache2-mod-php</span><br><span class="line">a2enmod php7.0</span><br><span class="line"># 不是a2enmod php</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt purge libapache2-mod-php7.0 libapache2-mod-php</span><br><span class="line">apt install libapache2-mod-php7.0 libapache2-mod-php</span><br><span class="line">a2enmod php7.0</span><br><span class="line"># 不是a2enmod php</span><br></pre></td></tr></table></figure>
 <ul>
 <li>为用户添加sudo</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 640 /etc/sudoers</span><br><span class="line">leida   ALL=(ALL)      ALL</span><br><span class="line">chmod 440 /etc/sudoers</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod 640 /etc/sudoers</span><br><span class="line">leida   ALL=(ALL)      ALL</span><br><span class="line">chmod 440 /etc/sudoers</span><br></pre></td></tr></table></figure>
 <ul>
 <li>获取外网ip</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl icanhazip.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl icanhazip.com</span><br></pre></td></tr></table></figure>
 <ul>
 <li>获取本机ip</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ip route get 8.8.8.8 | awk &apos;&#123;print $NF; exit&#125;&apos;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>docker开启一个终端</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it testv4 /bin/bash</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看正在监听的端口</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">netstat -nltp</span><br></pre></td></tr></table></figure>
-<ul>
-<li>docker镜像导入导出两种方法不可混用</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker save ubuntu:load&gt;/root/ubuntu.tar</span><br><span class="line">docker load&lt;ubuntu.tar</span><br><span class="line"></span><br><span class="line">docker export 98ca36&gt; ubuntu.tar</span><br><span class="line">cat ubuntu.tar | sudo docker import - ubuntu:import</span><br></pre></td></tr></table></figure>
-<ul>
-<li>docker 运行mysql容器</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --name mysql4 -e MYSQL_ROOT_PASSWORD=1234567  -d -P mysql</span><br></pre></td></tr></table></figure>
-<ul>
-<li>docker 挂载volume</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --name mysql4 -e MYSQL_ROOT_PASSWORD=1234567 --mount src=mydata,dst=/var/lib/mysql -d -P mysql</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#方法一</span><br><span class="line">ip route get 8.8.8.8 | awk &apos;&#123;print $NF; exit&#125;&apos;</span><br><span class="line">#方法二</span><br><span class="line">ethName=$(ip route show | grep &apos;default&apos;| awk &apos;&#123;print $5&#125;&apos;)</span><br><span class="line">ipAddr=$(ip addr | grep $ethName&apos;:&apos; -A2 | tail -n1 | awk &apos;&#123;print $2&#125;&apos; | cut -f1 -d &apos;/&apos;)</span><br><span class="line">echo $ipAddr</span><br></pre></td></tr></table></figure>
 <ul>
 <li>linux系统时间</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.date                        //查看本地</span><br><span class="line">2.hwclock --show                  //查看硬件的时间</span><br><span class="line">3.如果硬件的时间是对不上，那就对硬件的时间进行修改、</span><br><span class="line">4.hwclock --set --date &apos;2016-01-08  15:15:15&apos;    //设置硬件时间</span><br><span class="line">5.hwclock  --hctosys                //设置系统时间和硬件时间同步</span><br><span class="line">6.clock -w                        //保存时钟</span><br><span class="line"></span><br><span class="line">7.最后在通过重启，init 6 （reboot）            //重启后，查看系统时间是否真正生效</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.date                        //查看本地</span><br><span class="line">2.hwclock --show                  //查看硬件的时间</span><br><span class="line">3.如果硬件的时间是对不上，那就对硬件的时间进行修改、</span><br><span class="line">4.hwclock --set --date &apos;2016-01-08  15:15:15&apos;    //设置硬件时间</span><br><span class="line">5.hwclock  --hctosys                //设置系统时间和硬件时间同步</span><br><span class="line">6.clock -w                        //保存时钟</span><br><span class="line"></span><br><span class="line">7.最后在通过重启，init 6 （reboot）            //重启后，查看系统时间是否真正生效</span><br></pre></td></tr></table></figure>
 <ul>
 <li>添加用户</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">useradd leida</span><br><span class="line">passwd leida</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd leida</span><br><span class="line">passwd leida</span><br></pre></td></tr></table></figure>
 <ul>
 <li>网卡未启动时，通过该命令来自动获取ip</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dhclient</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dhclient</span><br></pre></td></tr></table></figure>
 <ul>
 <li>ip配置文件</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>docker registry获取存放镜像信息</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl http://127.0.0.1:5000/v2/_catalog</span><br><span class="line">curl http://127.0.0.1:5000/v2/centos/tags/list</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>daemon.json</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#里面不能写注释</span><br><span class="line">#客户端加上 &quot;insecure-registries&quot;: [ &quot;192.168.50.161:5000&quot;]才能通过http访问，否则需要配置https</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#里面不能写注释</span><br><span class="line">#客户端加上 &quot;insecure-registries&quot;: [ &quot;192.168.50.161:5000&quot;]才能通过http访问，否则需要配置https</span><br></pre></td></tr></table></figure>
 <ul>
 <li>centos6更新yum源</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1、备份</span><br><span class="line"></span><br><span class="line">cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d//CentOS-Base.repo.ori</span><br><span class="line"></span><br><span class="line">2、下载新的CentOS-Base.repo 到/etc/yum.repos.d/</span><br><span class="line"></span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo</span><br><span class="line"># -O表示重命名</span><br><span class="line">3、清理</span><br><span class="line"></span><br><span class="line"> yum clean all</span><br><span class="line"></span><br><span class="line">4、更新缓存</span><br><span class="line"></span><br><span class="line">yum makecache</span><br><span class="line">#yum install tree -y</span><br><span class="line">yum update -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1、备份</span><br><span class="line"></span><br><span class="line">cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d//CentOS-Base.repo.ori</span><br><span class="line"></span><br><span class="line">2、下载新的CentOS-Base.repo 到/etc/yum.repos.d/</span><br><span class="line"></span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo</span><br><span class="line"># -O表示重命名</span><br><span class="line">3、清理</span><br><span class="line"></span><br><span class="line"> yum clean all</span><br><span class="line"></span><br><span class="line">4、更新缓存</span><br><span class="line"></span><br><span class="line">yum makecache</span><br><span class="line">#yum install tree -y</span><br><span class="line">yum update -y</span><br></pre></td></tr></table></figure>
 <ul>
 <li>删除mysql</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum remove  mysql mysql-server mysql-libs mysql-server;</span><br><span class="line"></span><br><span class="line"> find / -name mysql 将找到的相关东西delete掉；</span><br><span class="line"></span><br><span class="line"> rpm -qa|grep mysql(查询出来的东东yum remove掉)</span><br><span class="line"></span><br><span class="line"> rpm -e mysql相关文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum remove  mysql mysql-server mysql-libs mysql-server;</span><br><span class="line"></span><br><span class="line"> find / -name mysql 将找到的相关东西delete掉；</span><br><span class="line"></span><br><span class="line"> rpm -qa|grep mysql(查询出来的东东yum remove掉)</span><br><span class="line"></span><br><span class="line"> rpm -e mysql相关文件</span><br></pre></td></tr></table></figure>
 <ul>
 <li>centos下载service</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install initscripts -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install initscripts -y</span><br></pre></td></tr></table></figure>
 <ul>
 <li>centos下载telnet</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install  xinetd</span><br><span class="line">yum install telnet</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install  xinetd</span><br><span class="line">yum install telnet</span><br></pre></td></tr></table></figure>
 <ul>
 <li>yum下载crontab</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install vixie-cron</span><br></pre></td></tr></table></figure>
-<ul>
-<li>docker使用entrypoint一定要加#!/bin/bash</li>
-<li>docker使用entrypoint 一定要加tail -f </li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install vixie-cron</span><br></pre></td></tr></table></figure>
 <ul>
 <li>刚开新虚拟机配置网络</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#网络配置文件：/etc/sysconfig/network-scripts/ifcfg-ens33</span><br><span class="line">#static assignment</span><br><span class="line">NM_CONTROLLED=no #表示该接口将通过该配置文件进行设置，而不是通过网络管理器进行管理</span><br><span class="line">ONBOOT=yes #开机启动</span><br><span class="line">BOOTPROTO=static #静态IP</span><br><span class="line">IPADDR=192.168.50.161 #本机地址</span><br><span class="line">NETMASK=255.255.255.0 #子网掩码</span><br><span class="line">GATEWAY=192.168.50.1 #默认网关</span><br><span class="line">DNS1=180.76.76.76</span><br><span class="line">DNS2=8.8.8.8</span><br><span class="line"></span><br><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#网络配置文件：/etc/sysconfig/network-scripts/ifcfg-ens33</span><br><span class="line">#static assignment</span><br><span class="line">NM_CONTROLLED=no #表示该接口将通过该配置文件进行设置，而不是通过网络管理器进行管理</span><br><span class="line">ONBOOT=yes #开机启动</span><br><span class="line">BOOTPROTO=static #静态IP</span><br><span class="line">IPADDR=192.168.50.161 #本机地址</span><br><span class="line">NETMASK=255.255.255.0 #子网掩码</span><br><span class="line">GATEWAY=192.168.50.1 #默认网关</span><br><span class="line">DNS1=180.76.76.76</span><br><span class="line">DNS2=8.8.8.8</span><br><span class="line"></span><br><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
 <ul>
 <li>下载netstat</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install net-tools</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install net-tools</span><br></pre></td></tr></table></figure>
 <ul>
 <li>run.sh的执行路径是根目录，不是/root/</li>
 <li>查看当前文件夹下文件大小</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">du -sh *</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh *</span><br></pre></td></tr></table></figure>
 <ul>
 <li>vim相关命令</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:set nu</span><br><span class="line">#显示行号</span><br><span class="line">:32,56d</span><br><span class="line">#删除上下行号之间的代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:set nu</span><br><span class="line">#显示行号</span><br><span class="line">:32,56d</span><br><span class="line">#删除上下行号之间的代码</span><br></pre></td></tr></table></figure>
 <ul>
 <li>firewall相关</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#添加开放端口</span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent </span><br><span class="line">#查看所有打开的端口</span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line">#更新防火墙规则</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#添加开放端口</span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent </span><br><span class="line">#查看所有打开的端口</span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line">#更新防火墙规则</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
 <ul>
 <li>选择时区</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tzselect</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tzselect</span><br></pre></td></tr></table></figure>
 
                 <hr>
                 
