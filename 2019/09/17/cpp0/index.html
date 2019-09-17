@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Leida&#39;s blog
+        有符号数与无符号数运算｜Leida&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://curiousLei.github.io/archives/2018/07/">
+    <link rel="canonical" href="http://curiousLei.github.io/2019/09/17/cpp0/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -43,7 +43,7 @@
 <!-- hack iOS CSS :active style -->
 <body ontouchstart="" class="animated fadeIn">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "false" data-istags="false
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
 " data-ishome = "false" >
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -116,154 +116,139 @@
 
 <!-- Main Content -->
 
+<!--only post-->
 
-<!-- Page Header -->
-<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 visible-xs-block visible-sm-block">
-    <div class="row">
-        <header class="intro-header">
-            <div class="container">
-                <div class="site-heading text-center">
-                    <div class="about-me">
-                        <!--移动端头部显示-->
-                        <img src="http://qiniu.debrisflow.cn/akane.jpg"/>
-                        <h5><a href="/about/">Lei da</a></h5>
-                        <p>不念过去 不畏将来</p>
+
+<img class="wechat-title-img"
+     src="http://qiniu.debrisflow.cn/blog-bg-black-run.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>有符号数与无符号数运算</h1>
+                    
+                    <span class="meta">
+                         作者 Lei da
+                        <span>
+                          日期 2019-09-17
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     </div>
-</div>
-<!-- Main Content -->
-<div class="container custom-haojen-container">
-    <!-- Post Container -->
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 post-container">
-            <!-- Main Content -->
+    <div class="post-title-haojen">
+        <span>
+            有符号数与无符号数运算
+        </span>
+    </div>
+</header>
 
-
-
-<div class="post-preview "
-     style="background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')">
-    <a href="/2018/07/09/用户评论情感极性判别/">
-        <h2 class="post-title">
-            用户评论情感极性判别
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-07-09
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                本文章介绍百度点石平台上的一个训练赛的赛题代码，赛题是包括用户评论文字的情感判别的分类问题，赛题链接戳此处
-数据预处理
-使用测试数据和训练数据生成语料库
-
-import numpy as npimport jiebaimport codecs# 该函数作用是读取文件def load_data(f..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-<div class="post-preview "
-     style="background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')">
-    <a href="/2018/07/09/Hello-Hexo/">
-        <h2 class="post-title">
-            Hello,Hexo!
-        </h2>
-        <p class="post-meta">
-            <i class="fa fa-calendar" aria-hidden="true"></i> 2018-07-09
-        </p>
-        
-        <div class="post-content-preview">
-            <p>
-                常见命令hexo new &quot;postName&quot; #新建文章hexo new page &quot;pageName&quot; #新建页面（新建了一个md文件组,但目前不知道怎么用）hexo generate #生成静态页面至public目录hexo server #开启预览..
-            </p>
-        </div>
-    </a>
-
-</div>
-
-<hr>
-
-
-
-
-<!-- 翻页 pager -->
-
-<ul class="pager">
-    
-    
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>本篇博客来源于leetcode上出现过的一个bug，当我按照如上所示循环条件时<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//vector&lt;int&gt; nums;</span><br><span class="line">for(k=0;k&lt;nums.size()-2;k++)</span><br></pre></td></tr></table></figure></p>
+<p>输入的nums为空数组的情况下，按照常理nums.size()-2相当于0-2=-2，但是事违人愿，出现了如下报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Line 923: Char 34: runtime error: reference binding to null pointer of type &apos;value_type&apos; (stl_vector.h)</span><br></pre></td></tr></table></figure></p>
+<p>原因是vector::size返回unsigned integral类型，即无符号整形。由于无符号数与有符号数运算时，会默认将有符号数当做无符号数来处理，下面举例说明</p>
+<ul>
+<li>-2在16位机内存中存储形式是1111111111111101，即有符号数-2的补码形式，若该补码当成无符号数来处理，则表示十进制的65533，一个很大的数，32位或64位也以此类推，总之0-2的结果也就不等于-2了。如下代码可以输出这个很大的数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()&#123;</span><br><span class="line">	vector&lt;int&gt; nums;</span><br><span class="line">	cout&lt;&lt;nums.size()-1&lt;&lt;endl;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
+<p>输出结果为18446744073709551615，该数值取决于电脑无符号整数的位数。</p>
+<ul>
+<li>把-2去掉之后，便不会报错，直接将nums.size()当成0来处理</li>
+</ul>
+<blockquote>
+<p>无符号数与有符号数的区别</p>
+<ul>
+<li>无符号类型能保存2倍于有符号类型的数据，因为腾出来一个符号位</li>
+</ul>
+</blockquote>
 
+                <hr>
+                
 
-        </div>
-        <!-- Sidebar Container -->
-        <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
-
-            <!-- About Me -->
-            <section class="visible-md visible-lg" style="padding: 0 18px">
-                <div class="short-about">
-                    <!--侧边栏头像-->
+                <ul class="pager">
                     
-                    <img src="http://qiniu.debrisflow.cn/akane.jpg"/>
                     
-                    <h5><a href="/about/">Lei da</a></h5>
+                    <li class="next">
+                        <a href="/2019/07/10/dockerCommands/" data-toggle="tooltip" data-placement="top"
+                           title="docker相关命令总结">Next Post &rarr;</a>
+                    </li>
                     
-                    <p>不念过去 不畏将来</p>
-                    
-                    <hr>
-                    <!-- SNS Link 社交 -->
-                    <ul class="list-inline">
-                        
-                        
-                        
+                </ul>
 
-                        
+                
 
-                        
+                
 
-                        
-                        <li>
-                            <a target="_blank" href="https://github.com/CuriousLei">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                            </a>
-                        </li>
-                        
 
-                        
-                    </ul>
-                </div>
-            </section>
+                <!--加入新的评论系统-->
+                
 
-            <!-- Featured Tags  标签 -->
-            
-            <section>
-                <div class="tags">
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
                     
                 </div>
-            </section>
-            
-
-            
-
+            </div>
         </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
     </div>
-</div>
+</article>
+
+
+
+
+
+
 
 <!-- Footer -->
 <!-- Footer -->

@@ -165,32 +165,33 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <ul>
+                <h2 id="你的"><a href="#你的" class="headerlink" title="你的"></a>你的</h2><p>初始化例子<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[rectangle setX: <span class="number">10</span> y: <span class="number">10</span> width: <span class="number">20</span> height: <span class="number">20</span>];</span><br></pre></td></tr></table></figure></p>
+<h2 id="我的"><a href="#我的" class="headerlink" title="我的"></a>我的</h2><ul>
 <li>查看客户端用户名邮箱</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git config user.name</span><br><span class="line">git config user.email</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name</span><br><span class="line">git config user.email</span><br></pre></td></tr></table></figure>
 <ul>
 <li>修改用户名密码</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git config --global user.name &quot;leida&quot;</span><br><span class="line">git config --global user.email &quot;leida@bjfu.edu.cn&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;leida&quot;</span><br><span class="line">git config --global user.email &quot;leida@bjfu.edu.cn&quot;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>创建仓库后初始化</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;###&quot; &gt;&gt; README.md</span><br><span class="line">git init</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m &quot;first commit&quot;</span><br><span class="line">git remote add origin https:....</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;###&quot; &gt;&gt; README.md</span><br><span class="line">git init</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m &quot;first commit&quot;</span><br><span class="line">git remote add origin https:....</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
 <ul>
 <li>git clone之后会自动建立remote</li>
 <li>同一行文本被不同分支修改过，才会有冲突，只有一个人修改，则不存在冲突，会直接覆盖</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin dev</span><br></pre></td></tr></table></figure>
 <ul>
 <li>表示将当前分支推送到远程dev分支上，-u表示建立关联，之后就只需要git push 就行</li>
 <li>出现refuseing to merge unrelated histories，按如下解决</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git pull origin master --allow-unrelated-histories</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master --allow-unrelated-histories</span><br></pre></td></tr></table></figure>
 <ul>
 <li>关联远程分支</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push --set-upstream origin hexo</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --set-upstream origin hexo</span><br></pre></td></tr></table></figure>
 
                 <hr>
                 
@@ -224,7 +225,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#你的"><span class="toc-text">你的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我的"><span class="toc-text">我的</span></a></li></ol>
                 </div>
             </div>
         </div>
@@ -369,7 +370,7 @@
   _st('install','','2.0.0');
 </script>
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!--wechat title img-->
 <img class="wechat-title-img" src="http://qiniu.debrisflow.cn/akane.jpg">
