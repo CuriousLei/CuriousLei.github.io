@@ -208,6 +208,10 @@
 </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name registry --restart=always --mount src=myregistry,dst=/var/lib/registry -p 5000:5000 -d registry:latest</span><br></pre></td></tr></table></figure>
+<ul>
+<li>docker容器内外拷贝</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp httpd.conf f1322f792d36:/usr/local/apache2/conf/</span><br></pre></td></tr></table></figure>
                 <hr>
                 
 
