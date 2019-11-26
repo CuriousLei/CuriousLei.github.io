@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="雷答在 Github 上的个人博客">
+    <meta name="keyword" content="">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="Leida" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        content-type常见类型辨析(以ajax与springmvc前后端交互为例)｜Leida&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://curiousLei.github.io/2019/11/21/frontEndDataInteraction/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Leida
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://qiniu.debrisflow.cn/blog-bg-black-run.jpg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://qiniu.debrisflow.cn/blog-bg-black-run.jpg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>content-type常见类型辨析(以ajax与springmvc前后端交互为例)</h1>
+                    
+                    <span class="meta">
+                         作者 Lei da
+                        <span>
+                          日期 2019-11-21
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            content-type常见类型辨析(以ajax与springmvc前后端交互为例)
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>在http报文的首部中，有一个字段Content-type，表示请求体（entity body）中的数据类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类型格式：type/subtype(;parameter)? type</span><br><span class="line">主类型，任意的字符串,如text,如果*代表所有；</span><br><span class="line">子类型，任意字符串，如html，如果*代表所有；</span><br><span class="line">可选，如charset参数。</span><br></pre></td></tr></table></figure>
+<p>常见的媒体格式类型如下</p>
+<ul>
+<li>text/html ： HTML格式</li>
+<li>text/plain ：纯文本格式      </li>
+<li>text/xml ：  XML格式</li>
+<li>image/gif ：gif图片格式    </li>
+<li>image/jpeg ：jpg图片格式 </li>
+<li>image/png：png图片格式<br>以application开头的媒体格式类型：</li>
+<li>application/xhtml+xml ：XHTML格式</li>
+<li>application/xml     ： XML数据格式</li>
+<li>application/atom+xml  ：Atom XML聚合格式    </li>
+<li>application/json    ： JSON数据格式</li>
+<li>application/pdf       ：pdf格式  </li>
+<li>application/msword  ： Word文档格式</li>
+<li>application/octet-stream ： 二进制流数据（如常见的文件下载）</li>
+<li>application/x-www-form-urlencoded ： <form enctype="””">中默认的encType，form表单数据被编码为key/value格式发送到服务器（表单默认的提交数据的格式）</form></li>
+</ul>
+<p>另外一种常见的媒体格式是上传文件之时使用的：</p>
+<ul>
+<li>multipart/form-data ： 需要在表单中进行文件上传时，就需要使用该格式</li>
+</ul>
+<p>以上就是我们在日常的开发中，经常会用到的若干content-type的内容格式。接下来重点分析application/json、application/x-www-form-urlencoded和multipart/form-data，三个常用的内容格式</p>
+<h3 id="application-json"><a href="#application-json" class="headerlink" title="application/json"></a>application/json</h3><p>我们常用的json数据格式，使用ajax发送此种数据请求，如下所示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var dt=&#123;</span><br><span class="line">    &quot;userName&quot;:&quot;leida&quot;,</span><br><span class="line">    &quot;userPasswd&quot;:&quot;123456&quot;</span><br><span class="line">&#125;</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    type:&quot;post&quot;,</span><br><span class="line">    url:&quot;http://10.28.230.26:8080/login&quot;,</span><br><span class="line">    data:JSON.stringify(dt),</span><br><span class="line">    contentType: &quot;application/json&quot;,</span><br><span class="line">    success : function(ret) &#123;</span><br><span class="line">        console.log(&quot;logintest&quot;,ret)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>注意dt是一个js对象，需要通过JSON.stringify将其序列化为json字符串，再封装进请求体，此时报文的entity body如下所示<br><img src="http://qiniu.debrisflow.cn/loginjson.png" alt="image"><br>此时，后台以如下形式接收参数（ParamDemo为自己定义的类）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@PostMapping(&quot;/testJson&quot;)</span><br><span class="line">public Object testJson(@RequestBody ParamDemo paramDemo)&#123;</span><br><span class="line">    return paramDemo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我遇到一个问题，若按照如下所示发送请求，即不使用JSON.stringify（以前用PHP后台的时候一向是这么搞）此时会报400不能正常解析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var dt=&#123;</span><br><span class="line">    &quot;userName&quot;:&quot;leida&quot;,</span><br><span class="line">    &quot;userPasswd&quot;:&quot;123456&quot;</span><br><span class="line">&#125;</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    type:&quot;post&quot;,</span><br><span class="line">    url:&quot;http://10.28.230.26:8080/login&quot;,</span><br><span class="line">    data:dt,</span><br><span class="line">    contentType: &quot;application/json&quot;,</span><br><span class="line">    success : function(ret) &#123;</span><br><span class="line">        console.log(&quot;logintest&quot;,ret)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>看了一下http报文，数据对象dt以key1=val1&amp;key2=val2 的方式进行编码,存在entity body中，如下图所示，就叫它键值对形式吧<br><img src="http://qiniu.debrisflow.cn/loginjsonstring.png" alt="image"><br>实际上，该种情况是可以被解析的，此时后台使用@RequestBody注解并使用String类型可以接收该键值对字符串：userName=leida&amp;userPasswd=123456，如下所示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@PostMapping(&quot;/testJson&quot;)</span><br><span class="line">public Object testJson(@RequestBody String str)&#123;</span><br><span class="line">    return str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>综上所述，若data参数为JSON.stringify转化好的类型，则被正常序列化为json字符串；若data参数为一个普通js对象，则会被序列化为键值对参数字符串形式，即userName=leida&amp;userPasswd=123456</p>
+<h3 id="application-x-www-form-urlencode"><a href="#application-x-www-form-urlencode" class="headerlink" title="application/x-www-form-urlencode"></a>application/x-www-form-urlencode</h3><p>这是ajax的contenttype的默认值，用于处理表单，会将表单数据序列化为键值对参数字符串形式，如下图所示<br><img src="http://qiniu.debrisflow.cn/loginformstring.png" alt="image"><br>可用HttpServletRequest 或者RequestBody 解析成字符串处理</p>
+<h3 id="application-form-data"><a href="#application-form-data" class="headerlink" title="application/form-data"></a>application/form-data</h3><p>它会将表单的数据处理为一条消息，以标签为单元，用分隔符分开。既可以上传键值对，也可以上传文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var formdata = new FormData($(&quot;#form&quot;)[0]);</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    type : &quot;post&quot;,</span><br><span class="line">    url : &quot;http://localhost:8080/roomInfoApply2&quot;,</span><br><span class="line">    data : formdata, // 你的formid</span><br><span class="line">    contentType:false,//ajax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件</span><br><span class="line">    processData: false, //当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data</span><br><span class="line">    error : function(request) &#123;</span><br><span class="line">        layer.alert(&apos;操作失败&apos;, &#123;</span><br><span class="line">            icon: 2,</span><br><span class="line">            title:&quot;提示&quot;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    success : function(ret) &#123;</span><br><span class="line">        console.log(ret)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>报文如下图所示<br><img src="http://qiniu.debrisflow.cn/loginform.png" alt="image"><br>后台使用如下方式接收数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@PostMapping(&quot;/roomInfoApply2&quot;)</span><br><span class="line">public Object testFile(HttpServletRequest request, @RequestParam(value=&quot;confer_num&quot;,required=false) String num, @RequestParam(value=&quot;confer_date&quot;,required=false) String date, @RequestParam MultipartFile uploadFile) throws IOException &#123;</span><br><span class="line">    System.out.println(uploadFile);</span><br><span class="line">    String newFileName = &quot;123.xlsx&quot;;</span><br><span class="line">    String imgPath = request.getServletContext().getRealPath(&quot;/files/&quot;) + newFileName;</span><br><span class="line">    File newFile = new File(request.getServletContext().getRealPath(&quot;/files&quot;), newFileName);</span><br><span class="line">    newFile.getParentFile().mkdirs();</span><br><span class="line">    uploadFile.transferTo(newFile);</span><br><span class="line">    //response.addHeader();</span><br><span class="line">    return num+date+imgPath;</span><br><span class="line">    //return testDataService.getAllTestData();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/11/09/springbootConfig/" data-toggle="tooltip" data-placement="top"
+                           title="springboot相关配置">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#application-json"><span class="toc-text">application/json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#application-x-www-form-urlencode"><span class="toc-text">application/x-www-form-urlencode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#application-form-data"><span class="toc-text">application/form-data</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/CuriousLei">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Leida 2019
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://curiousLei.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://qiniu.debrisflow.cn/akane.jpg">
+</body>
+
+</html>
