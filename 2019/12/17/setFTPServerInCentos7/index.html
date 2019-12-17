@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        java字符编码-Unicode编码问题刨根究底｜Leida&#39;s blog
+        centos7中搭建ftp服务｜Leida&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="http://curiousLei.github.io/2019/12/02/encodingAnalyze/">
+    <link rel="canonical" href="http://curiousLei.github.io/2019/12/17/setFTPServerInCentos7/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,12 +137,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>java字符编码-Unicode编码问题刨根究底</h1>
+                    <h1>centos7中搭建ftp服务</h1>
                     
                     <span class="meta">
                          作者 Lei da
                         <span>
-                          日期 2019-12-02
+                          日期 2019-12-17
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            java字符编码-Unicode编码问题刨根究底
+            centos7中搭建ftp服务
         </span>
     </div>
 </header>
@@ -165,81 +165,41 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>前段时间在读《java核心技术卷一》，遇到一些名词：码点、代码单元等，其实字面意思不难理解，解释如下</p>
+                <p>最近想和同学共享一些文件资源，于是在实验室服务器上搭建个ftp服务，本博客记录一下配置的流程。过程基本是参照别人的方法来做的，博客也是在别人博客基础上修改的，当然排除了一些坑点。</p>
 <ul>
-<li>码点(code point)：Unicode编码表中某个字符对应的代码值</li>
-<li>代码单元(code unit)：用于UTF-16编码的最小单元，16个bit</li>
+<li>参考：<a href="https://www.cnblogs.com/jefflee168/p/6575014.html" target="_blank" rel="noopener">https://www.cnblogs.com/jefflee168/p/6575014.html</a></li>
 </ul>
-<p>注意上述只是针对java中字符和字符串的Unicode+UTF-16机制的解释。若是其他编码方式就另说，如UTF-8的代码单元是用8个bit编码。</p>
-<p>下面问题来了</p>
-<blockquote>
-<p>书中建议，尽量不要使用char类型，最好将字符串转化为抽象数据类型来处理，即codepoints数组</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//将String转化为码点数组</span><br><span class="line">int[] codePoints = str.codePoints().toArray();</span><br></pre></td></tr></table></figure>
-<p>那么为什么要这样做呢，像c语言那样直接使用char数组不好吗？当然不行，因为在Unicode+UTF-16这种机制中，一个码点可由一个代码单元表示，但很多特殊字符也可能由两个代码单元表示。而char类型只能是一个代码单元。所以，若字符串中存在特殊字符，遍历char数组或者使用charAt等方法时就会出问题。但使用码点数组就OK，因为数组中每一个元素都代表一个码点，而不是一个代码单元。而c语言中采用ASCII字符集，每个码点都由一个8bit代码单元表示，使用char数组则不存在这个问题。</p>
-<p>这样的描述对懂Unicode和UTF-16的人来说，很容易理解。但我想在我的博客中深究一下编码机制背后的原理。为了便于小白理解，先介绍一下编码规范的基本概念。</p>
-<h2 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h2><p>制定编码规范为了将计算机能识别的二进制数，映射成人类能识别的字符。依据编码规范，计算机就可以将二进制数显示成字符。常见的编码规范有，ASCII码、GBK、ISO-8859-1、Unicode等。编码规范中有三个子概念，字库表、字符集、编码方式。</p>
-<h3 id="字库表"><a href="#字库表" class="headerlink" title="字库表"></a>字库表</h3><p>字库表中存储该编码规范能表示的所有字符。一套编码规范不一定能表示世界上所有的字符。例如GBK规范可以显示汉字，但不能显示法语、俄语等。</p>
-<h3 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h3><p>字库表中每一个字符都有一个二进制地址，字符集就是这些二进制数的集合。例如 00000000 - 01111111 为ASCII字符集的范围。</p>
-<h3 id="编码方式"><a href="#编码方式" class="headerlink" title="编码方式"></a>编码方式</h3><p>某些编码规范包括大量的字符，例如Unicode中包含上百万个字符。若每个字符都采用同样长度的二进制数来编码，即定长编码，则要用三个字节来存储，甚至在将来会用到四个字节。这样很多本身只需要单字节存储的字符也会占用三四个字节，会导致极大的资源浪费。</p>
-<p>如果能采用一些算法，使得部分字符采用单字节编码，部分采用双字节等(即变长编码)，可节省不少资源，这些算法即为<strong>编码方式</strong>。常见的编码方式有UTF-8、UTF-16、UTF-32等。我前文所说的：Unicode+UTF-16机制，就容易理解了，即基于Unicode编码规范并采用UTF-16编码方式的机制。java中的字符串和字符正是采用这种机制进行编码的，下面详细介绍Unicode和UTF-16。</p>
-<blockquote>
-<p>注意UTF的全称是Unicode Transformation Format，含义为将Unicode转换为某种格式。所以UTF-8、UTF-16等都是针对Unicode来说的。</p>
-</blockquote>
-<h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h2><p>在Unicode出现之前，已经有了很多编码规范，如美国的ASCII码、中国的GBK、西欧的ISO-8859-1等，每一种规范都不能涵盖所有国家的语言。Unicode设计的初衷就是将所有语言中的字符进行统一编码。</p>
-<p>Unicode最早的1.0版本中，字符集数量远远不到65536，因为当时的字符集不是那么庞大，使用2个字节编码足够使用，java也正是此时引进了16位的Unicode字符集。</p>
-<p>然而，在Unicode增加了大量的汉语、日语、韩语字符之后，字符数量超过了65536，于是16位的char类型也就不能满足了。实际上，这些海量的Unicode字符可以被划分为17个<strong>代码级别</strong>(code plane)</p>
-<ul>
-<li>第一级别，基本多语言级别(basic multilingual plane)，范围U+0000~U+FFFF，下文称其为基本平面</li>
-<li>其它16个级别，范围U+10000~U+10FFFF，存储辅助字符，下文把它称作增补平面</li>
-</ul>
-<p>UTF-16编码则是对不同的代码级别做文章，采用不同长度的编码表示不同代码级别的码点</p>
-<h2 id="UTF-16"><a href="#UTF-16" class="headerlink" title="UTF-16"></a>UTF-16</h2><p>UTF-16使用16位作为一个代码单元。基本平面的码点采用一个代码单元进行编码，增补平面的码点使用两个代码单元。</p>
-<blockquote>
-<p>可能你会问，使用一对代码单元表示一个增补平面的字符时，有没有可能把它判别成两个基本平面的码点？也就是说，有没有可能出现冲突的情况？</p>
-</blockquote>
-<ul>
-<li>当然不会，UTF-16中使用了代理机制，即使用基本平面中未映射字符的字符集区域，来作为增补平面中字符的代码单元的区域</li>
-</ul>
-<p>这些码点区域称为“替代区域”(syrrogate area)，即U+D800 ~ U+DFFF范围，该区域在基本平面中属于空闲区域，2048个值。如此一来，便避免了冲突。</p>
-<p>该替代区域分割为两部分，U+D800 ~ U+DBFF用于第一个代码单元，U+DC00 ~ U+DFFF用于第二个代码单元。</p>
-<table>
-<thead>
-<tr>
-<th>代码单元1</th>
-<th style="text-align:center">代码单元2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1101 10pp ppxx xxxx</td>
-<td style="text-align:center">1101 11xx xxxx xxxx</td>
-</tr>
-</tbody>
-</table>
-<p>pppp是指16个级别的级别编号，2^4=16。两个代码单元的变数部分(p和x)共20位，可表示2^20=1048576个码点。而增补平面范围U+10000~U+10FFFF恰好也是1048576个码点。所以这两个代码单元可完美表示出增补平面中的所有字符。</p>
-<p>这种方式十分巧妙。</p>
-<p>事实上，只有UTF-16使用了“替代区域”方法，像现在被广泛接纳的UTF-8编码，是通过首字节的比特位判断码点的代码单元数量。</p>
-<p>最后简单介绍下UTF-16和UTF-8的区别，以后再找时间细究，把UTF-8的坑填上。</p>
-<ul>
-<li>UTF-16使用2个或4个字节进行编码，大部分汉字采用两个字节编码，少量汉字采用四个字节</li>
-<li>UTF-8使用1个到4个字节编码，大部分汉字采用三个字节</li>
-</ul>
+<h3 id="1-安装vsftpd"><a href="#1-安装vsftpd" class="headerlink" title="1. 安装vsftpd"></a>1. 安装vsftpd</h3><ol>
+<li>安装vsftpd： yum install vsftpd -y</li>
+<li>启动vsftpd： systemctl start vsftpd</li>
+<li>设置开机启动：systemctl enable vsftpd</li>
+<li>创建ftp根目录： mkdir -p /ftpserver</li>
+</ol>
+<h3 id="2-设置配置文件"><a href="#2-设置配置文件" class="headerlink" title="2. 设置配置文件"></a>2. 设置配置文件</h3><p>vim /etc/vsftpd/vsftpd.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">listen=YES 　　　　　　　　　　　　　　　　// 需要把ipv6那个改成NO，两个不能同时开启</span><br><span class="line"></span><br><span class="line">#禁止匿名访问</span><br><span class="line">anonymous_enable=NO</span><br><span class="line">anon_upload_enable=NO</span><br><span class="line">anon_mkdir_write_enable=NO</span><br><span class="line">anon_other_write_enable=NO</span><br><span class="line"></span><br><span class="line">chroot_list_enable=NO 　　　　　　　　　　// 不允许用户离开自己的主目录</span><br><span class="line">chroot_list_file=/etc/vsftpd.chroot_list　　  // 虚拟用户列表，每行一个用户名</span><br><span class="line">local_enable=YES 　　　　　　　　　　 　　 // 允许本地用户访问</span><br><span class="line">write_enable=YES 　　　　　　　　　　　　 // 允许本地用户写入</span><br><span class="line">local_umask=022 　　　　　　　　　　　　 // 上传后的文件的默认掩码</span><br><span class="line">chroot_local_user=YES 　　　　　　　　　　 // 禁止本地用户离开自己的主目录</span><br><span class="line">pam_service_name=vsftpd　　　　　　 // 权限验证需要的加密文件</span><br><span class="line">guest_enable=YES 　　　　　　　　　　　　 // 开启虚拟用户功能</span><br><span class="line">guest_username=bt 　　　　　　　　　　　// 宿主用户，这个用户需要创建，或者使用已有用户，同样可以通过ftp来登录</span><br><span class="line">virtual_use_local_privs=YES 　　　　　　   // 用户登录后操作目录和本地用户权限一样</span><br><span class="line">user_config_dir=/etc/vsftpd/vconf 　　　　// 虚拟用户主目录设置文件</span><br><span class="line">allow_writeable_chroot=YES 　　　　　　 // 允许写入用户主目录，这条特别重要</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-添加虚拟用户，并创建用户目录"><a href="#3-添加虚拟用户，并创建用户目录" class="headerlink" title="3. 添加虚拟用户，并创建用户目录"></a>3. 添加虚拟用户，并创建用户目录</h3><ol>
+<li><p>vim /etc/vsftpd.chroot_list，添加两个用户如进去，分别为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 　　user1</span><br><span class="line"> </span><br><span class="line"> 　　user2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mkdir -p  /ftpserver/user1  /ftpserver/user2 // 创建用户目录</p>
+</li>
+<li>chmod –R 755 /ftpserver/user1 /ftpserver/user2 // 修改目录权限，如果希望用户有写入权限，给other添加写权限即可，例如777</li>
+<li>指定用户目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mkdir –p /etc/vsftpd/vconf</span><br><span class="line"></span><br><span class="line">cd /etc/vsftpd/vconf</span><br><span class="line"></span><br><span class="line">touch user1 user2</span><br><span class="line"># vim user1</span><br><span class="line">    local_root=/ftpserver/user1</span><br><span class="line"></span><br><span class="line">#vim user2</span><br><span class="line">    local_root=/ftpserver/user2</span><br></pre></td></tr></table></figure>
+<h3 id="4-设置用户密码和数据库"><a href="#4-设置用户密码和数据库" class="headerlink" title="4. 设置用户密码和数据库"></a>4. 设置用户密码和数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;user1\n123456\nuser2\n123456&quot; &gt;/etc/vsftpd/vusers.lis</span><br><span class="line"></span><br><span class="line">cd /etc/vsftpd</span><br><span class="line"></span><br><span class="line">db_load –T –t hash –f vusers.list vusers.db</span><br><span class="line"></span><br><span class="line">chmod 600 vusers.*</span><br></pre></td></tr></table></figure>
+<h3 id="5-指定登录认证方式"><a href="#5-指定登录认证方式" class="headerlink" title="5. 指定登录认证方式"></a>5. 指定登录认证方式</h3><p>vim /etc/pam.d/vsftpd<br>修改为如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auth  sufficient /lib64/security/pam_userdb.so    db=/etc/vsftpd/vusers</span><br><span class="line">account sufficient /lib64/security/pam_userdb.so    db=/etc/vsftpd/vusers</span><br></pre></td></tr></table></figure></p>
+<h3 id="6-关闭SELINUX的屏蔽"><a href="#6-关闭SELINUX的屏蔽" class="headerlink" title="6. 关闭SELINUX的屏蔽"></a>6. 关闭SELINUX的屏蔽</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/selinux/config</span><br><span class="line"></span><br><span class="line">    #SELINUX=enforcing #注释掉</span><br><span class="line">    SELINUX=disabled #增加</span><br><span class="line"></span><br><span class="line">setenforce 0 #使配置立即生效</span><br></pre></td></tr></table></figure>
+<p>最后 systemctl restart vsftpd即可</p>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2019/12/17/setFTPServerInCentos7/" data-toggle="tooltip" data-placement="top"
-                           title="centos7中搭建ftp服务">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2019/11/21/frontEndDataInteraction/" data-toggle="tooltip" data-placement="top"
-                           title="content-type常见类型辨析(以ajax与springmvc前后端交互为例)">Next Post &rarr;</a>
+                        <a href="/2019/12/02/encodingAnalyze/" data-toggle="tooltip" data-placement="top"
+                           title="java字符编码-Unicode编码问题刨根究底">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -258,7 +218,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#编码规范"><span class="toc-text">编码规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字库表"><span class="toc-text">字库表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符集"><span class="toc-text">字符集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码方式"><span class="toc-text">编码方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unicode"><span class="toc-text">Unicode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UTF-16"><span class="toc-text">UTF-16</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-安装vsftpd"><span class="toc-text">1. 安装vsftpd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-设置配置文件"><span class="toc-text">2. 设置配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-添加虚拟用户，并创建用户目录"><span class="toc-text">3. 添加虚拟用户，并创建用户目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-设置用户密码和数据库"><span class="toc-text">4. 设置用户密码和数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-指定登录认证方式"><span class="toc-text">5. 指定登录认证方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-关闭SELINUX的屏蔽"><span class="toc-text">6. 关闭SELINUX的屏蔽</span></a></li></ol>
                 </div>
             </div>
         </div>
